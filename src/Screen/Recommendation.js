@@ -23,7 +23,7 @@ export default function Recommendation({ navigation, route }) {
     try {
       //we want to wait for the Promise returned by AsyncStorage.setItem()
       //to be resolved to the actual value before returning the value
-      var jsonOfItem = await AsyncStorage.setItem(key, item);
+      var jsonOfItem = await AsyncStorage.setItem(key, JSON.stringify(item));
       console.log("Added in local host");
       return jsonOfItem;
     } catch (error) {

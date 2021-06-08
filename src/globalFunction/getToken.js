@@ -19,10 +19,10 @@ export const getToken = async key => {
 export const getTokenIntrests = async key => {
   try {
     const retrievedItem = await AsyncStorage.getItem(key);
-    const item = retrievedItem;
+    const item = JSON.parse(retrievedItem);
 
     if (item != null) {
-      return retrievedItem;
+      return item;
     } else {
       return "";
     }

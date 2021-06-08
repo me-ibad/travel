@@ -36,19 +36,26 @@ app.use(cors());
 app.use("/peer", peerServer);
 getlocation(app);
 review(app);
+const exec = require("child_process").execSync;
 sociallogin(app);
 emaillogin(app);
 comments(app);
-// app.post("/loginnow", (req, res1) => {
-// console.log(req.body)
-// res1.json("dsfsdf")
-// })
+app.post("/getResult", (req, res1) => {
+  console.log(req.body);
+
+  var result = exec("python uk_forecasting.py");
+
+  console.log(result.toString("utf8"));
+  res1.json(result.toString("utf8"));
+
+  //// res1.json("dsfsdf");
+});
 
 app.use(express.static(path.join(__dirname, "build")));
-app.use("*", (req, res) => {
-  // res.sendFile(path.join(__dirname+'/build/index.html'));
-  res.json("sdad");
-});
+// app.use("*", (req, res) => {
+//   // res.sendFile(path.join(__dirname+'/build/index.html'));
+//   res.json("sdad");
+// });
 
 const port = process.env.PORT || 5000;
 server.listen(port, () => console.log(`server is running ${port}`));

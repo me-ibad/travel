@@ -45,14 +45,14 @@ export function Home({ navigation }) {
     var interests = await getTokenIntrests("interests");
 
     axios
-      .post(serverpoint.servername + "/getDiscoverLocation", {
+      .post(serverpoint.servername + "/getLocations", {
         lat: "3434.434",
         long: "34343.3434",
         interests: interests,
       })
       .then(res => {
         // alert(res.data)
-        console.log(res.data);
+        ////  console.log(res.data);
         ////alert(res.data);
         setNearByLocation(res.data);
       });
@@ -60,14 +60,16 @@ export function Home({ navigation }) {
 
   async function getDiscoverLocation() {
     //// alert("ihsfisb");
+    var interests = await getTokenIntrests("interests");
     axios
-      .post(serverpoint.servername + "/getLocations", {
+      .post(serverpoint.servername + "/getDiscoverLocation", {
         lat: "3434.434",
         long: "34343.3434",
+        interests: interests,
       })
       .then(res => {
         // alert(res.data)
-        console.log(res.data);
+        ////   console.log(res.data);
         ////alert(res.data);
         setDiscoverLocation(res.data);
       });
