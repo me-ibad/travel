@@ -96,8 +96,8 @@ const AppNavigator = () => {
           headerShown: false,
         }}
       >
-        {/* <Stack.Screen name="Recommendation" component={Recommendation} /> */}
-        {myid == "" ? (
+        <Stack.Screen name="Test1" component={Test1} />
+        {/* {myid == "" ? (
           <>
             <Stack.Screen name="Test1" component={Test1} />
             <Stack.Screen name="Signin" component={Signin} />
@@ -122,7 +122,7 @@ const AppNavigator = () => {
             <Stack.Screen name="Signin" component={Signin} />
             <Stack.Screen name="Details" component={Details} />
           </>
-        )}
+        )} */}
       </Stack.Navigator>
     </NavigationContainer>
   );
