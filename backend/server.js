@@ -40,7 +40,7 @@ const exec = require("child_process").execSync;
 sociallogin(app);
 emaillogin(app);
 comments(app);
-app.post("/getResult", (req, res1) => {
+app.get("/getResult", (req, res1) => {
   console.log(req.body);
 
   var result = exec("python uk_forecasting.py");

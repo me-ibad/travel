@@ -12,8 +12,6 @@ import Signin from "../Screen/Signin";
 import Signup from "../Screen/Signup";
 import Test from "../Screen/Test";
 
-import Test1 from "../Screen/Test1";
-
 import Details from "../Screen/Details";
 import Searchpage from "../Screen/Searchpage";
 import { AsyncStorage } from "react-native";
@@ -96,10 +94,8 @@ const AppNavigator = () => {
           headerShown: false,
         }}
       >
-        <Stack.Screen name="Test1" component={Test1} />
-        {/* {myid == "" ? (
+        {myid == "" ? (
           <>
-            <Stack.Screen name="Test1" component={Test1} />
             <Stack.Screen name="Signin" component={Signin} />
             <Stack.Screen name="Signup" component={Signup} />
             <Stack.Screen name="Home" component={BottomTabNavigator} />
@@ -122,7 +118,7 @@ const AppNavigator = () => {
             <Stack.Screen name="Signin" component={Signin} />
             <Stack.Screen name="Details" component={Details} />
           </>
-        )} */}
+        )}
       </Stack.Navigator>
     </NavigationContainer>
   );
