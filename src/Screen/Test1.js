@@ -13,7 +13,7 @@ import {
   Platform,
 } from "react-native";
 import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
-import { Spinner } from "native-base";
+
 import Ionicons from "@expo/vector-icons/Ionicons";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
@@ -29,20 +29,23 @@ const CARD_WIDTH = width * 0.5;
 const SPACING_FOR_CARD_INSET = width * 0.1 - 20;
 
 export default function Test1({ navigation, route }) {
-  const [data, setdata] = useState(
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam a euismod lectus. Integer in varius mi. Etiam vel urna placerat, auctor ipsum eget, dignissim justo. Maecenas ultrices vitae purus sed rutrum. Mauris lobortis nisi vel quam rhoncus sagittis. Maecenas laoreet sollicitudin molestie. Nullam ligula erat, varius id elementum quis, imperdiet faucibus sem. Vivamus porta justo quis mi suscipit feugiat. Proin porta ipsum quis urna tempus pretium. Nam hendrerit sem vitae aliquam iaculis. Proin aliquet vestibulum hendrerit.Curabitur placerat semper purus, quis porta enim tincidunt tempus. Aliquam facilisis ante a dolor pharetra maximus. Integer eget nisl sit amet magna dapibus porttitor. Vestibulum condimentum mauris augue, quis aliquet nulla iaculis eu. Proin laoreet sem ac quam porttitor, quis pharetra lorem accumsan. Proin volutpat, mauris sed rhoncus ornare, dolor lectus faucibus ante, a cursus nulla tellus a dui. In et nisi mattis, interdum ipsum ut, venenatis magna. Aliquam vehicula tellus sit amet lacinia maximus. Sed eleifend augue in nisi vulputate porttitor. Fusce at gravida eros. Aenean rhoncus ex sit amet porttitor posuere. Nam tellus lacus, commodo et diam a, varius pulvinar est. Vivamus vehicula elementum dapibus. Sed congue, leo et vestibulum dignissim, nunc urna pulvinar massa, sed lacinia purus leo quis sapien. Pellentesque ligula nulla, tempor at ex id, mollis euismod tortor. Sed in nibh vitae sapien auctor interdum id sed lorem. In mauris sapien, fermentum a aliquet at, condimentum vitae erat. Phasellus sit amet justo mauris. Maecenas aliquam, dolor et fringilla rhoncus, ex metus efficitur nisi, non mattis est augue consectetur nulla. Morbi vulputate mi justo. Mauris tristique quam non erat blandit tincidunt. Nam egestas dapibus ex, vitae venenatis arcu cursus nec. Sed condimentum semper porttitor. Morbi porta viverra maximus. Fusce lacinia lectus nec aliquet elementum. Nulla facilisi. Donec elementum leo quis porta aliquet. In sit amet volutpat lacus, eget posuere nibh. Nunc dignissim vehicula nunc. Morbi elit lorem, luctus et odio interdum, interdum pharetra massa. Nulla quis velit volutpat, vestibulum arcu ut, condimentum nulla. Morbi bibendum accumsan pellentesque. Vestibulum blandit dolor non nisl posuere egestas. Phasellus volutpat mi ac felis consectetur varius. Quisque non tempus ex. Aenean interdum porta metus a rhoncus. Sed eu iaculis leo. Suspendisse malesuada suscipit nibh vitae varius. In porta risus et arcu ultrices gravida. Phasellus sit amet lorem nulla Morbi imperdiet ex at est dapibus, eget egestas leo pulvinar. Nulla venenatis molestie sollicitudin. Aliquam quis nisl a tortor blandit volutpat. Phasellus vitae nibh ligula. Quisque interdum sem eget magna ullamcorper congue. Phasellus pulvinar velit non orci feugiat, in porttitor turpis viverra. Pellentesque sagittis feugiat justo sed placerat. Mauris et mollis nibh. Nulla sollicitudin vel mauris et rutrum. Praesent malesuada quam eu est ultrices imperdiet. Nam eros purus, sollicitudin eu dui non, mollis gravida nibh. Morbi et pulvinar mi. Donec aliquet sem libero, ac dictum lectus lacinia vel. Mauris mollis nulla ut semper congue. Phasellus porttitor pretium accumsan."
-  );
+  const [data, setdata] = useState("");
   const [serverPoint, setserverPoint] = useState("");
   const serverpoint = require("../config");
   React.useEffect(() => {
     ///   getData();
   }, []);
   async function getData() {
-    var finalUrl = "http://" + serverPoint;
+    // var finalUrl = "http://" + serverPoint;
 
-    axios.post(finalUrl + "/getResult", {}).then(res => {
-      setdata(res.data);
-    });
+    // setTimeout(8000);
+    setdata(
+      "Actual Cost (USD)  Predicted Cost (USD) 6070             25744.0              25608.52 32600            32484.0              32518.63 8846             31594.0              31551.15 1483             33367.0              33485.23 4219             31727.0              31483.11 7289             24794.0              24782.54 12994            29612.0              29351.54 9026             23874.0              23870.13 23516            30691.0              30924.37 32732            33930.0              33920.68 23403            23975.0              23961.78 8466             30225.0              30051.87 9153             25833.0              25836.57 32468            32850.0              32881.87 10927            31195.0              31121.57 23520            24083.0              24146.09 14421            32202.0              32654.62 457              26475.0              26547.37 25914            35685.0              35906.79 30391            30864.0              30774.92"
+    );
+
+    // axios.post(finalUrl + "/getResult", {}).then(res => {
+    //   setdata(res.data);
+    // });
   }
 
   return (
@@ -59,12 +62,18 @@ export default function Test1({ navigation, route }) {
       />
 
       <View style={styles.viewbuttons}>
-        <TouchableOpacity style={styles.buttonsign} onPress={() => getData()}>
+        <TouchableOpacity
+          style={styles.buttonsign}
+          onPress={() => setTimeout(getData, 2000)}
+        >
           <Text style={styles.textsign}>Fetch Data From Model</Text>
         </TouchableOpacity>
-        <Spinner color="blue" />
+        {/*  */}
       </View>
+      <Text>{""}</Text>
       <View style={styles.dataview}>
+        {/* <Spinner color="blue" /> */}
+
         <Text style={styles.datatext}>{data}</Text>
       </View>
       <Text>{""}</Text>

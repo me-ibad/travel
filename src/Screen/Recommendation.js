@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { CheckBox, Text, StyleSheet, View } from "react-native";
-import { Button } from "native-base";
+import { CheckBox, Button, Text, StyleSheet, View } from "react-native";
+
 import { AsyncStorage } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native-gesture-handler";
@@ -190,15 +190,18 @@ export default function Recommendation({ navigation, route }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "white",
   },
   checkboxContainer: {
     flexDirection: "row",
     marginBottom: 20,
-    alignItems: "center",
-    justifyContent: "center",
+    marginTop: 5,
+    // alignItems: "center",
+    marginHorizontal: 50,
+    // justifyContent: "center",
   },
   checkbox: {
-    alignSelf: "center",
+    // alignSelf: "center",
   },
   label: {
     margin: 8,

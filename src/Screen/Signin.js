@@ -175,12 +175,14 @@ export default function Signin({ navigation }) {
       <TextInput
         style={styles.inputstyl}
         placeholder="Username"
+        placeholderTextColor="black"
         onChangeText={setusername}
       />
       <Text style={{ color: "red" }}>{usernameerror}</Text>
       <TextInput
         style={styles.inputstyl}
         placeholder="Password"
+        placeholderTextColor="black"
         secureTextEntry={true}
         onChangeText={setpass}
       />
@@ -195,7 +197,6 @@ export default function Signin({ navigation }) {
           <Text style={styles.textsign}>Sign In</Text>
         </TouchableOpacity>
 
-        
         <TouchableOpacity onPress={() => navigation.navigate("Home")}>
           <Text style={{ marginTop: 20 }}>skip</Text>
         </TouchableOpacity>

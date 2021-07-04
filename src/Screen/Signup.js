@@ -209,6 +209,7 @@ export default function Signup({ navigation }) {
           borderBottomWidth: 1,
           paddingBottom: 20,
         }}
+        placeholderTextColor="black"
         placeholder="Name"
         onChangeText={setname}
       />
@@ -218,9 +219,11 @@ export default function Signup({ navigation }) {
         style={{
           marginTop: 40,
           borderBottomColor: "#ddd",
+
           borderBottomWidth: 1,
           paddingBottom: 20,
         }}
+        placeholderTextColor="black"
         placeholder="Username"
         onChangeText={setusername}
       />
@@ -232,6 +235,7 @@ export default function Signup({ navigation }) {
           borderBottomWidth: 1,
           paddingBottom: 20,
         }}
+        placeholderTextColor="black"
         placeholder="Password"
         secureTextEntry={true}
         onChangeText={setpass}
@@ -246,6 +250,7 @@ export default function Signup({ navigation }) {
           borderBottomWidth: 1,
           paddingBottom: 20,
         }}
+        placeholderTextColor="black"
         placeholder="Confirm Password"
         secureTextEntry={true}
         onChangeText={setcpass}

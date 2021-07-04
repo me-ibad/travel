@@ -25,7 +25,6 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { removetoken } from "../globalFunction/getToken";
 
 import { Maps } from "../Screen/Maps";
-import { Button } from "native-base";
 var AnimatedImage = Animated.createAnimatedComponent(ImageBackground);
 const BANNER_H = 270;
 const TOPNAVI_H = 50;

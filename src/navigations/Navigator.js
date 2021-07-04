@@ -31,13 +31,15 @@ const BottomTabNavigator = () => {
           let iconName;
 
           if (route.name === "Home") {
-            iconName = focused ? "ios-home" : "ios-home";
+            iconName = focused ? "home" : "home";
           } else if (route.name === "Map") {
-            iconName = focused ? "ios-map" : "ios-map";
+            iconName = focused ? "map" : "map";
+          } else if (route.name === "Profile") {
+            iconName = focused ? "user" : "user";
           }
 
           // You can return any component that you like here!
-          return <Ionicons name={iconName} size={size} color={color} />;
+          return <Icon2 name={iconName} size={size} color={color} />;
         },
       })}
       tabBarOptions={{
@@ -47,6 +49,7 @@ const BottomTabNavigator = () => {
     >
       <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="Map" component={Test} />
+      <Tab.Screen name="Profile" component={Profile} />
     </Tab.Navigator>
   );
 };
@@ -96,15 +99,15 @@ const AppNavigator = () => {
           headerShown: false,
         }}
       >
-        <Stack.Screen name="Test1" component={Test1} />
-        {/* {myid == "" ? (
+        {/* <Stack.Screen name="Test1" component={Test1} /> */}
+        {myid == "" ? (
           <>
-            <Stack.Screen name="Test1" component={Test1} />
             <Stack.Screen name="Signin" component={Signin} />
             <Stack.Screen name="Signup" component={Signup} />
             <Stack.Screen name="Home" component={BottomTabNavigator} />
             <Stack.Screen name="Test" component={Test} />
             <Tab.Screen name="Maps" component={Maps} />
+
             <Stack.Screen name="Recommendation" component={Recommendation} />
             <Stack.Screen name="Search" component={Searchpage} />
             <Stack.Screen name="Details" component={Details} />
@@ -122,7 +125,7 @@ const AppNavigator = () => {
             <Stack.Screen name="Signin" component={Signin} />
             <Stack.Screen name="Details" component={Details} />
           </>
-        )} */}
+        )}
       </Stack.Navigator>
     </NavigationContainer>
   );
