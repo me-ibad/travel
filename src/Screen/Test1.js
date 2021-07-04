@@ -13,7 +13,7 @@ import {
   Platform,
 } from "react-native";
 import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
-import { Spinner } from "native-base";
+
 import Ionicons from "@expo/vector-icons/Ionicons";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
@@ -41,37 +41,12 @@ export default function Test1({ navigation, route }) {
   async function getData() {
     setisloading(true);
     var finalUrl = "http://" + serverPoint;
-  ///  alert(finalUrl);
+    ///  alert(finalUrl);
 
     // axios.post(finalUrl + "/getResult", {}).then(res => {
     //   setdata(res.data);
-    
 
-
-
-    setdata("       Actual Cost (USD)  Predicted Cost (USD)
-    6070             25744.0              25608.52
-    32600            32484.0              32518.63
-    8846             31594.0              31551.15
-    1483             33367.0              33485.23
-    4219             31727.0              31483.11
-    7289             24794.0              24782.54
-    12994            29612.0              29351.54
-    9026             23874.0              23870.13
-    23516            30691.0              30924.37
-    32732            33930.0              33920.68
-    23403            23975.0              23961.78
-    8466             30225.0              30051.87
-    9153             25833.0              25836.57
-    32468            32850.0              32881.87
-    10927            31195.0              31121.57
-    23520            24083.0              24146.09
-    14421            32202.0              32654.62
-    457              26475.0              26547.37
-    25914            35685.0              35906.79
-    30391            30864.0              30774.92")
-      setisloading(false);
-   /// });
+    /// });
   }
 
   return (
@@ -88,7 +63,10 @@ export default function Test1({ navigation, route }) {
       />
 
       <View style={styles.viewbuttons}>
-        <TouchableOpacity style={styles.buttonsign} onPress={() => getData()}>
+        <TouchableOpacity
+          style={styles.buttonsign}
+          onPress={() => setTimeout(getData, 2000)}
+        >
           <Text style={styles.textsign}>Fetch Data From Model</Text>
         </TouchableOpacity>
         {isloading == true ? <Spinner color="blue" /> : null}

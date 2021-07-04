@@ -4,21 +4,11 @@ import {
   Text,
   StyleSheet,
   Linking,
+  Image,
   Alert,
   TouchableOpacity,
 } from "react-native";
-import {
-  Container,
-  Header,
-  Content,
-  List,
-  ListItem,
-  Thumbnail,
-  Left,
-  Body,
-  Right,
-  Button,
-} from "native-base";
+
 import { Rating, AirbnbRating } from "react-native-ratings";
 import { getToken } from "./../../globalFunction/getToken";
 import axios from "axios";
@@ -75,7 +65,7 @@ export default function Reviews(props) {
   return (
     <View style={styles.mainview}>
       <View style={styles.comment}>
-        <List>
+        {/* <List>
           {allComments.map((s, i) => (
             <>
               <ListItem avatar>
@@ -93,7 +83,7 @@ export default function Reviews(props) {
               </ListItem>
             </>
           ))}
-        </List>
+        </List> */}
       </View>
 
       <View style={styles.rating}>
