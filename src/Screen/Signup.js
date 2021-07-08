@@ -318,20 +318,6 @@ export default function Signup({ navigation }) {
               G
             </Text>
           </View>
-          <View
-            style={{
-              height: 40,
-              width: 40,
-              borderRadius: 40 / 2,
-              backgroundColor: "#1565c0",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <Text style={{ fontSize: 25, fontWeight: "bold", color: "#FFF" }}>
-              in
-            </Text>
-          </View>
         </View>
 
         <View

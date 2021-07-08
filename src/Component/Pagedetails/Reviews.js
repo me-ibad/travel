@@ -1,13 +1,23 @@
 import React, { useState, useEffect, useRef } from "react";
 import {
-  View,
-  Text,
-  StyleSheet,
-  Linking,
+  ImageBackground,
+  Dimensions,
   Image,
-  Alert,
+  StyleSheet,
+  Animated,
+  Text,
+  Platform,
+  View,
+  ScrollView,
   TouchableOpacity,
 } from "react-native";
+const w = Dimensions.get("window").width;
+const h = Dimensions.get("window").height;
+
+const MIN_HEIGHT = 400;
+import COLORS from "../../assets/colors/colors";
+import { FontAwesome } from "@expo/vector-icons";
+import { FontAwesome5 } from "@expo/vector-icons";
 
 import { Rating, AirbnbRating } from "react-native-ratings";
 import { getToken } from "./../../globalFunction/getToken";
@@ -21,6 +31,7 @@ export default function Reviews(props) {
   const [allComments, setallComments] = React.useState([]);
   async function passComment() {
     var userdata = await getToken("travelapp");
+
     axios
       .post(serverpoint.servername + "/postComments", {
         uploderid: JSON.parse(userdata)._id,
@@ -63,28 +74,26 @@ export default function Reviews(props) {
   }, []);
 
   return (
-    <View style={styles.mainview}>
-      <View style={styles.comment}>
-        {/* <List>
-          {allComments.map((s, i) => (
-            <>
-              <ListItem avatar>
-                <Left>
-                  <Thumbnail
-                    source={{
-                      uri: s.users.img,
-                    }}
-                  />
-                </Left>
-                <Body>
-                  <Text style={styles.commentname}>{s.users.fname}</Text>
-                  <Text note>{s.comment}</Text>
-                </Body>
-              </ListItem>
-            </>
-          ))}
-        </List> */}
-      </View>
+    <View style={styles.container}>
+      {allComments.map((s, i) => (
+        <>
+          <View style={styles.viewCard}>
+            <Image
+              source={{
+                uri: s.users.img,
+              }}
+              style={styles.imgAvtr}
+            />
+
+            <View style={styles.viewName}>
+              <Text style={styles.textName}>{s.users.fname}</Text>
+              <Text style={styles.textReview}>{s.comment}</Text>
+            </View>
+          </View>
+        </>
+      ))}
+
+      <View style={styles.divider} />
 
       <View style={styles.rating}>
         <AirbnbRating
@@ -94,29 +103,64 @@ export default function Reviews(props) {
           showRating
           onFinishRating={ratingCompleted}
         />
-        {/* <Text>{avvgRating}</Text> */}
+        <Text>{avvgRating}</Text>
       </View>
-      <TextInput
-        style={{
-          marginTop: 40,
-          borderBottomColor: "#ddd",
-          borderBottomWidth: 1,
-          paddingBottom: 20,
-        }}
-        placeholder="comment"
-        onChangeText={setpostComment}
-      />
+      <View style={{}}>
+        <TextInput
+          style={{
+            borderBottomColor: "#ddd",
+            borderBottomWidth: 1,
+            paddingBottom: 20,
+          }}
+          placeholder="comment"
+          onChangeText={setpostComment}
+        />
 
-      <TouchableOpacity style={styles.textinput} onPress={() => passComment()}>
-        <Text style={{ textAlign: "center", color: "#FFF", fontSize: 16 }}>
-          Post
-        </Text>
-      </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.textinput}
+          onPress={() => passComment()}
+        >
+          <Text style={{ textAlign: "center", color: "#FFF", fontSize: 16 }}>
+            Post
+          </Text>
+        </TouchableOpacity>
+      </View>
     </View>
+
+    // <View style={styles.mainview}>
+    //   <View style={styles.comment}>
+    //     <List>
+    //       {allComments.map((s, i) => (
+    //         <>
+    //           <ListItem avatar>
+    //             <Left>
+    //               <Thumbnail
+    //                 source={{
+    //                   uri: s.users.img,
+    //                 }}
+    //               />
+    //             </Left>
+    //             <Body>
+    //               <Text style={styles.commentname}>{s.users.fname}</Text>
+    //               <Text note>{s.comment}</Text>
+    //             </Body>
+    //           </ListItem>
+    //         </>
+    //       ))}
+    //     </List>
+    //   </View>
   );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "white",
+    maxHeight: h,
+    minHeight: MIN_HEIGHT,
+    width: w,
+  },
+
   mainview: {
     flex: 1,
     backgroundColor: "#FFF",
@@ -125,6 +169,8 @@ const styles = StyleSheet.create({
   rating: {
     flexDirection: "row",
     marginTop: 15,
+    alignSelf: "center",
+    alignItems: "center",
     paddingVertical: 10,
   },
   comment: {
@@ -142,5 +188,38 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     borderRadius: 40,
     marginTop: 30,
+  },
+
+  imgAvtr: {
+    width: 60,
+    height: 60,
+  },
+  viewCard: {
+    flexDirection: "row",
+    marginVertical: 10,
+    padding: 10,
+  },
+  viewName: {
+    width: "50%",
+    marginVertical: 1,
+    marginHorizontal: 10,
+  },
+  divider: {
+    borderBottomColor: "grey",
+    marginHorizontal: 20,
+    marginVertical: 8,
+    borderBottomWidth: 0.5,
+  },
+  iconContainer: {
+    right: 20,
+    marginTop: 5,
+  },
+  textName: {
+    fontSize: 20,
+    fontWeight: "bold",
+  },
+  textReview: {
+    fontSize: 12,
+    color: "grey",
   },
 });

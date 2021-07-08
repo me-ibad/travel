@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useRef } from "react";
 import {
   ImageBackground,
   Dimensions,
   Image,
   StyleSheet,
+  Animated,
   Text,
+  Platform,
+  Button,
   View,
   ScrollView,
   TouchableOpacity,
@@ -19,37 +22,80 @@ import {
   TriggeringView,
 } from "react-native-image-header-scroll-view";
 import Favourite from "../Component/ProfilePage/Favourite";
+import { Colors } from "react-native/Libraries/NewAppScreen";
+import Places from "../Component/Pagedetails/Places";
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
+const MIN_HEIGHT = Platform.OS === "ios" ? 90 : 55;
+const MAX_HEIGHT = 250;
 const Tab = createMaterialTopTabNavigator();
-export default function Profile() {
+
+export default function Profile({ navigation }) {
+  const navTitleView = useRef(null);
+
   return (
-    <ImageHeaderScrollView
-      maxHeight={200}
-      minHeight={100}
-      headerImage={{
-        uri: "https://image.freepik.com/free-photo/beautiful-scenery-green-valley-near-alp-mountains-austria-cloudy-sky_181624-6979.jpg",
-      }}
-      renderForeground={() => (
-        <View
-          style={{
-            height: 150,
-            justifyContent: "center",
-            alignItems: "center",
-          }}
+    <View style={styles.container}>
+      <ImageHeaderScrollView
+        maxHeight={MAX_HEIGHT}
+        minHeight={MIN_HEIGHT}
+        maxOverlayOpacity={0.6}
+        minOverlayOpacity={0.3}
+        headerImage={{
+          uri: "https://image.freepik.com/free-photo/beautiful-scenery-green-valley-near-alp-mountains-austria-cloudy-sky_181624-6979.jpg",
+        }}
+        renderForeground={() => (
+          <View>
+            <View style={styles.navTitleView}>
+              <View style={{ width: "10%" }}>
+                <TouchableOpacity onPress={() => navigation.goBack()}>
+                  <Icon name="arrow-back" size={24} color={Colors.white} />
+                </TouchableOpacity>
+              </View>
+
+              <View style={{ width: "80%" }}></View>
+
+              <View style={{ width: "20%" }}>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate("Settings")}
+                >
+                  <Icon name="settings" size={24} color={Colors.white} />
+                </TouchableOpacity>
+              </View>
+            </View>
+            <View style={styles.viewForeground}>
+              <View style={styles.viewName}>
+                <Image
+                  source={{
+                    uri: "https://image.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg",
+                  }}
+                  style={styles.imgAvtr}
+                />
+                <Text style={styles.textName}>Alexio Morales</Text>
+              </View>
+            </View>
+          </View>
+        )}
+        renderFixedForeground={() => (
+          <Animated.View style={styles.navTitleView} ref={navTitleView}>
+            {/* <Text style={styles.navTitle}>New</Text> */}
+          </Animated.View>
+        )}
+      >
+        <TriggeringView
+          style={styles.section}
+          // onHide={() => navTitleView.current.fadeInUp(200)}
+          // onDisplay={() => navTitleView.current.fadeOut(100)}
         >
-          <TouchableOpacity onPress={() => console.log("tap!!")}>
-            <Text style={{ backgroundColor: "transparent" }}>Tap Me!</Text>
-          </TouchableOpacity>
-        </View>
-      )}
-    >
-      <View style={{ height: 1000 }}>
-        <TriggeringView onHide={() => console.log("text hidden")}>
-          <Text>Scroll Me!</Text>
+          <View style={styles.viewTabs}>
+            <Tab.Navigator>
+              <Tab.Screen name="Places" component={Places} />
+              <Tab.Screen name="Favourite" component={Places} />
+              <Tab.Screen name="Reviews" component={Reviews} />
+            </Tab.Navigator>
+          </View>
         </TriggeringView>
-      </View>
-    </ImageHeaderScrollView>
+      </ImageHeaderScrollView>
+    </View>
 
     // <ScrollView style={styles.container}>
     //   <ImageBackground
@@ -73,15 +119,7 @@ export default function Profile() {
     //       <Text style={styles.textName}>Alexio Morales</Text>
     //     </View>
     //   </ImageBackground>
-    //   <View style={styles.viewBody}>
-    //     <View style={styles.viewTabs}>
-    //       <Tab.Navigator>
-    //         <Tab.Screen name="Places" component={Favourite} />
-    //         <Tab.Screen name="Reviews" component={Favourite} />
-    //         <Tab.Screen name="New" component={Favourite} />
-    //       </Tab.Navigator>
-    //     </View>
-    //   </View>
+    //
     // </ScrollView>
   );
 }
@@ -116,7 +154,7 @@ const styles = StyleSheet.create({
   textName: {
     fontSize: 28,
     fontWeight: "bold",
-    color: COLORS.black,
+    color: COLORS.white,
     marginTop: 20,
   },
   viewBody: {
@@ -127,7 +165,33 @@ const styles = StyleSheet.create({
     // alignItems: "center",
   },
   viewTabs: {
-    marginVertical: 10,
-    marginHorizontal: 15,
+    marginVertical: 5,
+    backgroundColor: "black",
+    // marginHorizontal: 15,
+  },
+  viewForeground: {
+    height: 120,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  navTitleView: {
+    height: MIN_HEIGHT,
+    flexDirection: "row",
+    // justifyContent: "center",
+    // alignItems: "center",
+    paddingTop: Platform.OS === "ios" ? 40 : 10,
+    marginHorizontal: 10,
+    opacity: 1,
+  },
+  navTitle: {
+    color: "white",
+    fontSize: 18,
+    backgroundColor: "transparent",
+  },
+  section: {
+    // padding: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: "#cccccc",
+    backgroundColor: "white",
   },
 });
