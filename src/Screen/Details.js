@@ -110,7 +110,7 @@ export default function Details({ navigation, route }) {
                     fontSize: 20,
                   }}
                 >
-                  {avvgRating}
+                  {avvgRating.toString().substring(0, 3)}
                 </Text>
               </View>
             </View>
@@ -155,7 +155,7 @@ export default function Details({ navigation, route }) {
   <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
     <Text
       style={{
-        fontSize: 18,
+        fontSize: 18,o
         fontWeight: 'bold',
         color: COLORS.white,
       }}>

@@ -178,12 +178,12 @@ export default function Recommendation({ navigation, route }) {
         <Text style={styles.label}>TouristAttraction</Text>
       </View>
 
-      <Button
+      <TouchableOpacity
         onPress={handleClick}
         style={{ marginLeft: 10, paddingHorizontal: 50 }}
       >
-        <Text style={{ color: "white" }}>Update</Text>
-      </Button>
+        <Text style={{ color: "black" }}>Update</Text>
+      </TouchableOpacity>
     </View>
   );
 }
