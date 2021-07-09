@@ -201,16 +201,17 @@ export default function Signin({ navigation }) {
           <Text style={{ marginTop: 20 }}>skip</Text>
         </TouchableOpacity>
         <View style={styles.viewscoialbtn}>
-          <View style={styles.viewfacebook}>
-            <Text style={styles.socialtext} onPress={facebooklogIn}>
-              f
-            </Text>
-          </View>
-          <View style={styles.viewgoogle}>
-            <Text style={styles.socialtext} onPress={googlelogin}>
-              G
-            </Text>
-          </View>
+          <TouchableOpacity onPress={facebooklogIn}>
+            <View style={styles.viewfacebook}>
+              <Text style={styles.socialtext}>f</Text>
+            </View>
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={googlelogin}>
+            <View style={styles.viewgoogle}>
+              <Text style={styles.socialtext}>G</Text>
+            </View>
+          </TouchableOpacity>
         </View>
 
         <View

@@ -7,6 +7,7 @@ import {
   Animated,
   Text,
   Platform,
+  Button,
   View,
   ScrollView,
   TouchableOpacity,
@@ -43,36 +44,40 @@ export default function Profile({ navigation }) {
           uri: "https://image.freepik.com/free-photo/beautiful-scenery-green-valley-near-alp-mountains-austria-cloudy-sky_181624-6979.jpg",
         }}
         renderForeground={() => (
-          <View style={styles.viewForeground}>
-            <View style={styles.viewName}>
-              <Image
-                source={{
-                  uri: "https://image.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg",
-                }}
-                style={styles.imgAvtr}
-              />
-              <Text style={styles.textName}>Alexio Morales</Text>
+          <View>
+            <View style={styles.navTitleView}>
+              <View style={{ width: "10%" }}>
+                <TouchableOpacity onPress={() => navigation.goBack()}>
+                  <Icon name="arrow-back" size={24} color={Colors.white} />
+                </TouchableOpacity>
+              </View>
+
+              <View style={{ width: "80%" }}></View>
+
+              <View style={{ width: "20%" }}>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate("Settings")}
+                >
+                  <Icon name="settings" size={24} color={Colors.white} />
+                </TouchableOpacity>
+              </View>
+            </View>
+            <View style={styles.viewForeground}>
+              <View style={styles.viewName}>
+                <Image
+                  source={{
+                    uri: "https://image.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg",
+                  }}
+                  style={styles.imgAvtr}
+                />
+                <Text style={styles.textName}>Alexio Morales</Text>
+              </View>
             </View>
           </View>
         )}
         renderFixedForeground={() => (
           <Animated.View style={styles.navTitleView} ref={navTitleView}>
             {/* <Text style={styles.navTitle}>New</Text> */}
-            <View style={{ width: "10%" }}>
-              <TouchableOpacity onPress={() => navigation.goBack()}>
-                <Icon name="arrow-back" size={24} color={Colors.white} />
-              </TouchableOpacity>
-            </View>
-
-            <View style={{ width: "80%" }}>
-              <Text></Text>
-            </View>
-
-            <View style={{ width: "10%" }}>
-              <TouchableOpacity onPress={() => navigation.goBack()}>
-                <Icon name="settings" size={24} color={Colors.white} />
-              </TouchableOpacity>
-            </View>
           </Animated.View>
         )}
       >
