@@ -13,6 +13,7 @@ import {
   StatusBar,
 } from "react-native";
 import { AsyncStorage } from "react-native";
+import * as Location from "expo-location";
 import colors from "../assets/colors/colors";
 import Feather from "react-native-vector-icons/Feather";
 import Entypo from "@expo/vector-icons/Entypo";
@@ -44,10 +45,12 @@ export function Home({ navigation }) {
     var obje = await getToken("travelapp");
     const userData = JSON.parse(obje);
 
+    let location = await Location.getCurrentPositionAsync({});
+
     axios
       .post(serverpoint.servername + "/getLocations", {
-        lat: "3434.434",
-        long: "34343.3434",
+        lat: location.coords.latitude,
+        long: location.coords.longitude,
         interests: userData.userInterests.map((value) => value.name),
       })
       .then((res) => {
@@ -61,11 +64,12 @@ export function Home({ navigation }) {
   async function getDiscoverLocation() {
     var obje = await getToken("travelapp");
     const userData = JSON.parse(obje);
+    let location = await Location.getCurrentPositionAsync({});
 
     axios
       .post(serverpoint.servername + "/getDiscoverLocation", {
-        lat: "3434.434",
-        long: "34343.3434",
+        lat: location.coords.latitude,
+        long: location.coords.longitude,
         interests: userData.userInterests.map((value) => value.name),
       })
       .then((res) => {

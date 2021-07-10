@@ -20,6 +20,8 @@ export default function Recommendation({ navigation }) {
   React.useEffect(() => {
     async function fetchMyAPI() {
       var obje = await getToken("travelapp");
+      console.log(JSON.parse(obje));
+      //  console.log("Helosadgsjhagfafgs", JSON.parse(obje));
       setUserData(JSON.parse(obje));
       setUserInterests(JSON.parse(obje).userInterests);
     }
@@ -84,7 +86,14 @@ export default function Recommendation({ navigation }) {
       .then((res) => {
         // alert(res.data)
         storetoken("travelapp", res.data);
-        navigation.navigate("Home");
+        navigation.reset({
+          index: 0,
+          routes: [
+            {
+              name: "Home",
+            },
+          ],
+        });
       });
   };
 

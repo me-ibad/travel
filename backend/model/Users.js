@@ -50,6 +50,7 @@ const Users = mongoose.model(
     gid: {
       type: String,
     },
+    userInterests: { type: Array, default: [] },
   })
 );
 

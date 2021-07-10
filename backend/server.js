@@ -19,7 +19,7 @@ const userInterests = require("./route/UserInterests/userInterests");
 
 var mongoose = require("mongoose");
 
-mongoose.connect("mongodb://localhost:27017/smarttravelapp", {
+mongoose.connect("mongodb://localhost:27017/travelproject", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useFindAndModify: false,
@@ -47,6 +47,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use("/usersemail", emailLoginBymodel);
 app.use("/social", socialLoginBymodel);
+
+// socialLoginBymodel(app);
 
 app.use("/peer", peerServer);
 const exec = require("child_process").execSync;

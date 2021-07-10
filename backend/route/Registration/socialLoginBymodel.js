@@ -26,6 +26,7 @@ router.post("/signupfacebook", (req, res) => {
   Users.find({ fid: req.body.fid }, async function (err, docs) {
     if (docs == null || docs == "") {
       let userdata = new Users(data);
+      console.log(userdata);
 
       userdata = await userdata
         .save()
@@ -35,7 +36,7 @@ router.post("/signupfacebook", (req, res) => {
           console.log(userdata);
           res.json(userdata);
         })
-        .catch(err => {
+        .catch((err) => {
           console.log("error occured " + err);
           res.json("fail");
         });
@@ -45,6 +46,7 @@ router.post("/signupfacebook", (req, res) => {
   });
 });
 router.post("/signupgoogle", (req, res) => {
+  console.log(req.body);
   let data = {
     email: req.body.email,
     fname: req.body.name,
@@ -68,7 +70,7 @@ router.post("/signupgoogle", (req, res) => {
     async function (err, docs) {
       if (docs == null || docs == "") {
         let userdata = new Users(data);
-
+        console.log(userdata, docs, err);
         userdata = await userdata
           .save()
           .then(() => {
@@ -77,7 +79,7 @@ router.post("/signupgoogle", (req, res) => {
             console.log(userdata);
             res.json(userdata);
           })
-          .catch(err => {
+          .catch((err) => {
             console.log("error occured " + err);
             res.json("fail");
           });

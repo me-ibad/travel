@@ -9,11 +9,9 @@ const spawn = require("child_process").spawn;
 module.exports = function (router) {
   router.post("/getLocations", (req, res) => {
     console.log("its orginal only here kjbdsbkfsdkjbfksj");
-    var lat = 74.2227181;
-    var long = 31.4137617;
-    const category = ["Restaurent"];
-    var regex = category.map(function (val) {
-      return new RegExp(val);
+
+    var regex = req.body.interests.map(function (val) {
+      return RegExp(val, "i");
     });
 
     MongoClient.connect(url, async function (err, db) {
@@ -55,11 +53,11 @@ module.exports = function (router) {
               
                    
                       return distanceInKmBetweenEarthCoordinates(
-                        ${lat},
-                        ${long},
+                        ${req.body.lat},
+                        ${req.body.long},
                         latitutde,
                         longitude
-                      );
+                      ).toFixed(1);
 
                     
                   }`,
@@ -70,7 +68,7 @@ module.exports = function (router) {
               },
             },
             { $match: { calDistance: { $ne: NaN } } },
-            // { $match: { category: { $in: regex } } },
+            { $match: { category: { $in: regex } } },
             { $sort: { calDistance: 1 } },
           ],
           { allowDiskUse: true }
@@ -85,7 +83,7 @@ module.exports = function (router) {
 
       console.log(
         "result",
-        result.map(value => value.category)
+        result.map((value) => value.calDistance)
       );
       res.json(result);
     });
@@ -181,13 +179,13 @@ module.exports = function (router) {
     // });
 
     console.log(req.body.interests);
-    var lat = 74.2227181;
-    var long = 31.4137617;
-    let intrests = [];
+    // var lat = 74.2227181;
+    // var long = 31.4137617;
+    // let intrests = [];
 
-    intrests.push(req.body.interests);
-    const category = await intrests;
-    var regex = category.map(function (val) {
+    // intrests.push(req.body.interests);
+    // const category = await intrests;
+    var regex = req.body.interests.map(function (val) {
       return new RegExp(val, "i");
     });
 
@@ -232,8 +230,8 @@ module.exports = function (router) {
               
                    
                       return distanceInKmBetweenEarthCoordinates(
-                        ${lat},
-                        ${long},
+                        ${req.body.lat},
+                        ${req.body.long},
                         latitutde,
                         longitude
                       );
@@ -247,7 +245,7 @@ module.exports = function (router) {
               },
             },
             { $match: { rating: { $ne: null } } },
-            // { $match: { category: { $in: regex } } },
+            { $match: { category: { $in: regex } } },
             {
               $match: {
                 $expr: {
@@ -275,7 +273,7 @@ module.exports = function (router) {
 
       console.log(
         "result",
-        result.map(value => value.rating)
+        result.map((value) => value.rating)
       );
       res.json(result);
     });

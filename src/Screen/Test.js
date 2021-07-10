@@ -13,15 +13,15 @@ import {
   Platform,
 } from "react-native";
 import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
-
-import Ionicons from "@expo/vector-icons/Ionicons";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
-
-import Fontisto from "@expo/vector-icons/Fontisto";
+import * as Location from "expo-location";
+import { Fontisto, Ionicons, FontAwesome5 } from "@expo/vector-icons";
 import { Rating, AirbnbRating } from "react-native-ratings";
 import { mapDarkStyle, mapStandardStyle } from "../Component/mapData";
 
 import { useTheme } from "@react-navigation/native";
+import { getToken } from "../globalFunction/getToken";
+import axios from "axios";
 
 const { width, height } = Dimensions.get("window");
 const CARD_HEIGHT = 220;
@@ -40,19 +40,23 @@ export default function Test({ navigation, route }) {
   ];
 
   async function recomendedpoints() {
-    var lat = 74.2227181;
-    var long = 31.4137617;
+    let location = await Location.getCurrentPositionAsync({});
+    var obje = await getToken("travelapp");
+    const userData = JSON.parse(obje);
 
-    const response = await fetch(serverpoint.servername + "/getLocations", {
-      method: "post",
-      headers: {
-        "content-type": "application/x-www-form-urlencoded; charset=utf-8",
-      },
-      body: `lat=${lat}&long=${long}`,
-    });
-    const json = await response.json();
-
-    setalllocations(json);
+    axios
+      .post(serverpoint.servername + "/getLocations", {
+        lat: location.coords.latitude,
+        long: location.coords.longitude,
+        interests: userData.userInterests.map((value) => value.name),
+      })
+      .then((res) => {
+        // alert(res.data)
+        ////   console.log(res.data);
+        ////alert(res.data);
+        console.log(res.data);
+        setalllocations(res.data);
+      });
 
     /// setlat(location.coords.latitude)
 
@@ -67,15 +71,11 @@ export default function Test({ navigation, route }) {
 
   for (var i = 0; i < alllocations.length; i++) {
     markers.push({
+      ...alllocations[i],
       coordinate: {
         latitude: alllocations[i].latitude,
         longitude: alllocations[i].longitude,
       },
-      title: alllocations[i].title,
-      description: "This is the best food place",
-      image: { uri: alllocations[i].pic1 },
-      rating: 4,
-      reviews: 99,
     });
   }
 
@@ -179,7 +179,7 @@ export default function Test({ navigation, route }) {
     return { scale };
   });
 
-  const onMarkerPress = mapEventData => {
+  const onMarkerPress = (mapEventData) => {
     const markerID = mapEventData._targetInst.return.key;
 
     let x = markerID * CARD_WIDTH + markerID * 20;
@@ -215,7 +215,7 @@ export default function Test({ navigation, route }) {
             <MapView.Marker
               key={index}
               coordinate={marker.coordinate}
-              onPress={e => onMarkerPress(e)}
+              onPress={(e) => onMarkerPress(e)}
             >
               <Animated.View style={[styles.markerWrap]}>
                 <Animated.Image
@@ -296,7 +296,7 @@ export default function Test({ navigation, route }) {
         )}
       >
         {state.markers.map((marker, index) => (
-          <View
+          <TouchableOpacity
             key={index}
             style={{
               backgroundColor: "#FEFEFE",
@@ -306,9 +306,15 @@ export default function Test({ navigation, route }) {
               marginRight: 20,
               padding: 5,
             }}
+            onPress={() => {
+              navigation.navigate("Details", {
+                placedata: marker,
+                from: "database",
+              });
+            }}
           >
             <Image
-              source={marker.image}
+              source={marker.image1}
               style={{ width: 170, borderRadius: 10, height: 130 }}
             />
             <View
@@ -333,10 +339,10 @@ export default function Test({ navigation, route }) {
                   {marker.title}
                 </Text>
               </View>
-              <Ionicons name="map-marker" size={25} color="#ff5c83" />
+              <FontAwesome5 name="map-marker-alt" size={25} color="#ff5c83" />
             </View>
             <Rating size={2} imageSize={16} startingValue={4.3} />
-          </View>
+          </TouchableOpacity>
         ))}
       </Animated.ScrollView>
     </View>

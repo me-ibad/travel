@@ -7,6 +7,7 @@ const dbnmae = config.dbnmae;
 
 module.exports = function (router) {
   router.post("/manageUserInterests", (req, res1) => {
+    console.log(req.body.userInterests);
     ///  console.log(req.body);
 
     MongoClient.connect(

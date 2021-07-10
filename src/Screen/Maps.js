@@ -27,7 +27,7 @@ const CARD_HEIGHT = 220;
 const CARD_WIDTH = width * 0.8;
 
 export default function Maps({ navigation, route }) {
-  const { placedata } = route.params ?? {};
+  const { placedata = {} } = route.params ?? {};
   var mylat = 0;
   var mylong = 0;
   if (typeof placedata == "undefined") {
@@ -44,7 +44,7 @@ export default function Maps({ navigation, route }) {
 
   const [alllocations, setalllocations] = useState([]);
 
-  const origin = { latitude: lat, longitude: long };
+  let origin = { latitude: lat, longitude: long };
   const destination = {
     latitude: placedata.latitude,
     longitude: placedata.longitude,
@@ -82,6 +82,14 @@ export default function Maps({ navigation, route }) {
     })();
   }, []);
 
+  const Mylocation = async () => {
+    let location = await Location.getCurrentPositionAsync({});
+    setLocation(location);
+    setlat(location.coords.latitude);
+
+    setlong(location.coords.longitude);
+  };
+
   // const liveLongAndLat=React.useMemo(()=>{
   //   let location = await Location.getCurrentPositionAsync({});
   //   return {
@@ -89,6 +97,40 @@ export default function Maps({ navigation, route }) {
   //     longitude:location.coords.longitude
   //   }
   // },[])
+
+  const isNavigationStopped = React.useMemo(() => {
+    const R = 6371e3; // metres
+    const φ1 = (origin.latitude * Math.PI) / 180; // φ, λ in radians
+    const φ2 = (destination.latitude * Math.PI) / 180;
+    const Δφ = ((destination.latitude - origin.latitude) * Math.PI) / 180;
+    const Δλ = ((destination.longitude - origin.longitude) * Math.PI) / 180;
+
+    const a =
+      Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
+      Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    const res = R * c;
+    console.log(res / 1000);
+    return res / 1000; // in metres
+  }, [origin, destination]);
+
+  console.log("isNavigationStopped", isNavigationStopped);
+
+  React.useEffect(() => {
+    async function myApiCall() {
+      let location = await Location.watchPositionAsync(
+        { accuracy: Location.Accuracy.High },
+        (loc) => {
+          origin = {
+            latitude: loc.latitude,
+            longitude: loc.longitude,
+          };
+        }
+      );
+    }
+
+    myApiCall();
+  }, [isNavigationStopped]);
 
   let text = "Waiting..";
   if (errorMsg) {
@@ -108,6 +150,7 @@ export default function Maps({ navigation, route }) {
         provider={PROVIDER_GOOGLE} // remove if not using Google Maps
         style={styles.map}
         region={getMapRegion()}
+        showsUserLocation={true}
       >
         <Marker coordinate={origin ?? {}} />
         <Marker coordinate={destination ?? {}} />
@@ -121,6 +164,9 @@ export default function Maps({ navigation, route }) {
           lineDashPattern={[0]}
         />
       </MapView>
+      <TouchableOpacity style={styles.viewCurrent} onPress={() => Mylocation()}>
+        <FontAwesome name="location-arrow" size={24} color="black" />
+      </TouchableOpacity>
       <View style={styles.searchBox}>
         <TextInput
           placeholder="Search here"
@@ -450,5 +496,16 @@ const styles = StyleSheet.create({
   image: {
     width: "100%",
     height: 80,
+  },
+  viewCurrent: {
+    backgroundColor: "white",
+    width: 40,
+    padding: 8,
+    elevation: 5,
+    height: 40,
+    position: "absolute",
+    right: 20,
+    bottom: 50,
+    borderRadius: 20,
   },
 });

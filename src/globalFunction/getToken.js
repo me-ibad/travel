@@ -1,6 +1,6 @@
 import { AsyncStorage } from "react-native";
 
-export const getToken = async key => {
+export const getToken = async (key) => {
   try {
     const retrievedItem = await AsyncStorage.getItem(key);
     const item = JSON.parse(retrievedItem);
@@ -16,7 +16,7 @@ export const getToken = async key => {
   return;
 };
 
-export const getTokenIntrests = async key => {
+export const getTokenIntrests = async (key) => {
   try {
     const retrievedItem = await AsyncStorage.getItem(key);
     const item = JSON.parse(retrievedItem);
@@ -32,7 +32,7 @@ export const getTokenIntrests = async key => {
   return;
 };
 
-export const removetoken = async key => {
+export const removetoken = async (key) => {
   try {
     await AsyncStorage.removeItem(key);
 

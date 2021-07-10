@@ -85,7 +85,6 @@ export default function Signin({ navigation }) {
   }
 
   async function googlelogin() {
-    let interests = await getToken("interests");
     const { type, accessToken, user } = await Google.logInAsync({
       androidClientId:
         "1058542661103-stjukh4vl9m06be8m6m7l0g8ihsv9gch.apps.googleusercontent.com",
@@ -94,8 +93,7 @@ export default function Signin({ navigation }) {
 
     if (type === "success") {
       /* `accessToken` is now valid and can be used to get data from the Google API with HTTP requests */
-      console.log(user);
-
+      console.log(serverpoint.servername + "/social/signupgoogle");
       axios
         .post(serverpoint.servername + "/social/signupgoogle", {
           email: user.email,
@@ -105,7 +103,7 @@ export default function Signin({ navigation }) {
         })
         .then((res) => {
           storetoken("travelapp", res.data);
-          console.log("res.data", res.data);
+          console.log("res.data in google sign in", res.data);
 
           if (!res.data.userInterests.length) {
             navigation.navigate("Recommendation");
