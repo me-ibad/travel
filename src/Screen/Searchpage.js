@@ -2,27 +2,35 @@ import React from "react";
 import { View, StyleSheet, Text } from "react-native";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import Constants from "expo-constants";
+import { mapapi } from "../config";
+import axios from "axios";
 export default function Home({ navigation }) {
   async function getDataFromApi(data) {
-    console.log(data);
+    ////  console.log(data);
     console.log("------------formed data");
+
+    let place = await axios.get(
+      "https://maps.googleapis.com/maps/api/place/details/json?placeid=" +
+        data.place_id +
+        "&key=" +
+        mapapi
+    );
+
+    console.log("------------formed data");
+
     var title = "";
 
-    var lat = "";
-    var long = "";
+    var lat = place.data.result.geometry.location.lat;
+    var long = place.data.result.geometry.location.lng;
     var pic1 = "";
 
     if (data.hasOwnProperty("name")) {
       title = data.name;
 
-      lat = data.geometry.location.lat;
-      long = data.geometry.location.lng;
       ///pic1 = "https://www.panpuri.com/asset/images/product/noimg.jpg";
     } else {
       title = data.description;
 
-      lat = data.description + "lat";
-      long = data.description + "long";
       /// pic1 = "https://www.panpuri.com/asset/images/product/noimg.jpg";
     }
 
@@ -35,7 +43,7 @@ export default function Home({ navigation }) {
       pic1: "https://www.panpuri.com/asset/images/product/noimg.jpg",
       alldata: data,
     };
-    //// console.log(placeobject);
+    console.log(placeobject);
     navigation.navigate("Details", { placedata: placeobject, from: "search" });
   }
   return (

@@ -16,6 +16,7 @@ import { AsyncStorage } from "react-native";
 import { useScreens } from "react-native-screens";
 import { storetoken } from "../utils/helper";
 
+import { getToken } from "../globalFunction/getToken";
 //  import * as Animatable from 'react-native-animatable';
 
 export default function Signup({ navigation }) {
@@ -64,6 +65,7 @@ export default function Signup({ navigation }) {
   };
 
   async function facebooklogIn() {
+    let interests = await getToken("interests");
     try {
       await Facebook.initializeAsync("1667224953462264");
       const { type, token, expirationDate, permissions, declinedPermissions } =
@@ -79,15 +81,16 @@ export default function Signup({ navigation }) {
         const finalresponse = await response.json();
         console.log(finalresponse);
         axios
-          .post(serverpoint.servername + "/signupfacebook", {
+          .post(serverpoint.servername + "/social/signupfacebook", {
             fid: finalresponse.id,
             name: finalresponse.name,
           })
           .then((res) => {
-            // alert(res.data)
-            // console.log(res.data)
-            storetoken("travelapp", res.data);
-            console.log("res.data", res.data);
+            if (!res.data.userInterests.length) {
+              navigation.navigate("Recommendation");
+            } else {
+              navigation.navigate("Home");
+            }
           });
         ////  alert(final.id)
       } else {
@@ -99,6 +102,7 @@ export default function Signup({ navigation }) {
   }
 
   async function googlelogin() {
+    let interests = await getToken("interests");
     const { type, accessToken, user } = await Google.logInAsync({
       androidClientId:
         "1058542661103-stjukh4vl9m06be8m6m7l0g8ihsv9gch.apps.googleusercontent.com",
@@ -109,14 +113,19 @@ export default function Signup({ navigation }) {
       /* `accessToken` is now valid and can be used to get data from the Google API with HTTP requests */
 
       axios
-        .post(serverpoint.servername + "/signupgoogle", {
+        .post(serverpoint.servername + "/social/signupgoogle", {
           email: user.email,
           gid: user.id,
           img: user.photoUrl,
         })
         .then((res) => {
-          alert("Sign In for Login");
-          console.log(res.data);
+          storetoken("travelapp", res.data);
+
+          if (!res.data.userInterests.length) {
+            navigation.navigate("Recommendation");
+          } else {
+            navigation.navigate("Home");
+          }
         });
     }
   }
@@ -148,13 +157,14 @@ export default function Signup({ navigation }) {
 
     if (validcpass() && validname() && validpass() && validusername()) {
       axios
-        .post(serverpoint.servername + "/signupemail", {
+        .post(serverpoint.servername + "/usersemail/signupemail", {
           name: name,
           email: username,
+
           pass: pass,
         })
         .then((res) => {
-          alert("Sign In for Login");
+          alert(res.data);
         });
     }
   }

@@ -4,7 +4,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
 
 import Profile from "../Screen/Profile";
-import Chat, { Maps } from "../Screen/Maps";
+import Maps from "../Screen/Maps";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import Icon2 from "@expo/vector-icons/Entypo";
 import { Home } from "../Screen/Home";
@@ -47,7 +47,7 @@ const BottomTabNavigator = () => {
       }}
     >
       <Tab.Screen name="Home" component={Home} />
-      <Tab.Screen name="Map" component={Test} />
+      <Tab.Screen name="Map" component={Maps} />
       <Tab.Screen name="Profile" component={Profile} />
     </Tab.Navigator>
   );
@@ -104,7 +104,7 @@ const AppNavigator = () => {
             <Stack.Screen name="Signup" component={Signup} />
             <Stack.Screen name="Home" component={BottomTabNavigator} />
             <Stack.Screen name="Test" component={Test} />
-            <Tab.Screen name="Maps" component={Maps} />
+            {/* <Tab.Screen name="Maps" component={Maps} /> */}
             <Stack.Screen name="Settings" component={Settings} />
             <Stack.Screen name="Recommendation" component={Recommendation} />
             <Stack.Screen name="Search" component={Searchpage} />
@@ -116,7 +116,7 @@ const AppNavigator = () => {
             <Stack.Screen name="Recommendation" component={Recommendation} />
             <Stack.Screen name="Search" component={Searchpage} />
             <Stack.Screen name="Settings" component={Settings} />
-            <Tab.Screen name="Maps" component={Maps} />
+            {/* <Tab.Screen name="Maps" component={Maps} /> */}
             <Stack.Screen name="Signup" component={Signup} />
             <Stack.Screen name="Test" component={Test} />
 

@@ -14,8 +14,7 @@ import axios from "axios";
 import Icon from "@expo/vector-icons/MaterialIcons";
 import COLORS from "../assets/colors/colors";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
-import Profile from "./Profile";
-import Signin from "./Signin";
+
 import Detailsmore from "../Component/Pagedetails/Detailsmore";
 const serverpoint = require("../config");
 import Reviews from "../Component/Pagedetails/Reviews";
@@ -23,8 +22,6 @@ import Placepics from "../Component/Pagedetails/Placepics";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { removetoken } from "../globalFunction/getToken";
-
-import { Maps } from "../Screen/Maps";
 import { switchToMap } from "../utils/helper";
 var AnimatedImage = Animated.createAnimatedComponent(ImageBackground);
 const BANNER_H = 270;
@@ -64,6 +61,12 @@ export default function Details({ navigation, route }) {
   //     alert("no location");
   //   } else {
   //     navigation.navigate("Maps", { placedata: placedata });
+  //   }
+  // }
+  //   if (lastWord == "lat") {
+  //     alert("no location");
+  //   } else {
+  //     // navigation.navigate("Maps", { placedata: placedata });
   //   }
   // }
 
@@ -113,7 +116,7 @@ export default function Details({ navigation, route }) {
                     fontSize: 20,
                   }}
                 >
-                  {avvgRating}
+                  {avvgRating.toString().substring(0, 3)}
                 </Text>
               </View>
             </View>
@@ -149,15 +152,13 @@ export default function Details({ navigation, route }) {
         <Tab.Navigator>
           <Tab.Screen name="Details" component={DetailsmoreComp} />
           <Tab.Screen name="Reviews" component={ReviewsComp} />
-          {/* component={Reviews}
-          /> */}
-          {/* <Tab.Screen name="Pictures" component={Placepics} /> */}
+          <Tab.Screen name="Pictures" component={Placepics} />
         </Tab.Navigator>
         {/* <View style={style.footer}>
   <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
     <Text
       style={{
-        fontSize: 18,
+        fontSize: 18,o
         fontWeight: 'bold',
         color: COLORS.white,
       }}>

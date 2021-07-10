@@ -14,7 +14,6 @@ import {
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
 
-const MIN_HEIGHT = 400;
 import COLORS from "../../assets/colors/colors";
 import { FontAwesome } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
@@ -126,29 +125,6 @@ export default function Reviews(props) {
         </TouchableOpacity>
       </View>
     </View>
-
-    // <View style={styles.mainview}>
-    //   <View style={styles.comment}>
-    //     <List>
-    //       {allComments.map((s, i) => (
-    //         <>
-    //           <ListItem avatar>
-    //             <Left>
-    //               <Thumbnail
-    //                 source={{
-    //                   uri: s.users.img,
-    //                 }}
-    //               />
-    //             </Left>
-    //             <Body>
-    //               <Text style={styles.commentname}>{s.users.fname}</Text>
-    //               <Text note>{s.comment}</Text>
-    //             </Body>
-    //           </ListItem>
-    //         </>
-    //       ))}
-    //     </List>
-    //   </View>
   );
 }
 
@@ -156,8 +132,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "white",
-    maxHeight: h,
-    minHeight: MIN_HEIGHT,
+    // maxHeight: h,
+
     width: w,
   },
 

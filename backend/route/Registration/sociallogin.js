@@ -35,8 +35,7 @@ module.exports = function (router) {
               FacebookLink: "",
               LinkdinLink: "",
               TwitterLink: "",
-              img:
-                "https://image.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg",
+              img: "https://image.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg",
               fid: req.body.fid,
               gid: "",
             };

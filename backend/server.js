@@ -15,9 +15,20 @@ const getlocation = require("./route/recomendationmodel/getlocation");
 const review = require("./route/reviews/breviews");
 const comments = require("./route/reviews/comments");
 const sociallogin = require("./route/Registration/sociallogin");
-const emaillogin = require("./route/Registration/enaillogin");
 const userInterests = require("./route/UserInterests/userInterests");
 
+var mongoose = require("mongoose");
+
+mongoose.connect("mongodb://localhost:27017/smarttravelapp", {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useFindAndModify: false,
+});
+
+const emaillogin = require("./route/Registration/enaillogin");
+
+const emailLoginBymodel = require("./route/Registration/emailLoginBymodel");
+const socialLoginBymodel = require("./route/Registration/socialLoginBymodel");
 app.use(express.json());
 const router = express.Router();
 app.use(cors());
@@ -33,7 +44,10 @@ const peerServer = ExpressPeerServer(server, {
 });
 
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cors());
+
+app.use("/usersemail", emailLoginBymodel);
+app.use("/social", socialLoginBymodel);
+
 app.use("/peer", peerServer);
 const exec = require("child_process").execSync;
 
@@ -60,6 +74,10 @@ app.use(express.static(path.join(__dirname, "build")));
 //   // res.sendFile(path.join(__dirname+'/build/index.htm`l'));
 //   res.json("sdad");
 // });
+app.use("*", (req, res) => {
+  // res.sendFile(path.join(__dirname+'/build/index.html'));
+  res.json("sdad");
+});
 
 app.get("/", (req, res) => {
   console.log("Hello");
@@ -69,3 +87,39 @@ app.get("/", (req, res) => {
 const port = process.env.PORT || 5000;
 server.listen(port, () => console.log(`server is running ${port}`));
 io.on("connection", (socket) => {});
+io.on("connection", (socket) => {});
+
+// const express = require("express");
+// const app = require("express")();
+
+// var server = require("http").createServer(app);
+
+// const cors = require("cors");
+// const bodyParser = require("body-parser");
+// // const router = express.Router();
+// const emailLoginBymodel = require("./route/Registration/emailLoginBymodel");
+
+// var mongoose = require("mongoose");
+// var path = require("path");
+
+// app.use(cors());
+// app.use(bodyParser.json({ limit: "50mb" }));
+// app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
+
+// app.use("/usersemail", emailLoginBymodel);
+
+// mongoose.connect("mongodb://localhost:27017/smartTrave", {
+//   useNewUrlParser: true,
+//   useUnifiedTopology: true,
+//   useFindAndModify: false,
+// });
+
+// app.use(express.static(path.join(__dirname, "build")));
+
+// app.use("*", (req, res) => {
+//   res.sendFile(path.join(__dirname + "/build/index.html"));
+// });
+
+// app.listen(process.env.PORT || 5000, () =>
+//   console.log(`Running on PORT ${process.env.PORT || 500}`)
+// );

@@ -59,7 +59,7 @@ export default function Signin({ navigation }) {
         const finalresponse = await response.json();
         console.log(finalresponse);
         axios
-          .post(serverpoint.servername + "/signupfacebook", {
+          .post(serverpoint.servername + "/social/signupfacebook", {
             fid: finalresponse.id,
             name: finalresponse.name,
           })
@@ -95,8 +95,9 @@ export default function Signin({ navigation }) {
     if (type === "success") {
       /* `accessToken` is now valid and can be used to get data from the Google API with HTTP requests */
       console.log(user);
+
       axios
-        .post(serverpoint.servername + "/signupgoogle", {
+        .post(serverpoint.servername + "/social/signupgoogle", {
           email: user.email,
           name: user.name,
           gid: user.id,
@@ -134,18 +135,21 @@ export default function Signin({ navigation }) {
 
     if (validpass() && validusername()) {
       axios
-        .post(serverpoint.servername + "/signinemail", {
+        .post(serverpoint.servername + "/usersemail/signinemail", {
           email: username,
           pass: pass,
         })
         .then((res) => {
-          storetoken("travelapp", res.data);
-          console.log("res.data", res.data);
-
-          if (interests == "") {
-            navigation.navigate("Recommendation");
+          if (res.data != "fail") {
+            storetoken("travelapp", res.data[0]);
+            console.log(res.data[0]);
+            if (!res.data[0].userInterests.length) {
+              navigation.navigate("Recommendation");
+            } else {
+              navigation.navigate("Home");
+            }
           } else {
-            navigation.navigate("Home");
+            alert("user not exist");
           }
         });
     }

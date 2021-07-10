@@ -21,7 +21,9 @@ export default function Settings() {
     "https://image.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg"
   );
 
-  useEffect(() => {
+  useEffect(() => {}, []);
+
+  const pickImage = async () => {
     (async () => {
       if (Platform.OS !== "web") {
         const { status } =
@@ -31,9 +33,7 @@ export default function Settings() {
         }
       }
     })();
-  }, []);
 
-  const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,

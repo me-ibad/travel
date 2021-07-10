@@ -24,6 +24,7 @@ import {
 import Favourite from "../Component/ProfilePage/Favourite";
 import { Colors } from "react-native/Libraries/NewAppScreen";
 import Places from "../Component/Pagedetails/Places";
+import ReviewsProfile from "../Component/ProfilePage/ReviewsProfile";
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
 const MIN_HEIGHT = Platform.OS === "ios" ? 90 : 55;
@@ -90,37 +91,12 @@ export default function Profile({ navigation }) {
             <Tab.Navigator>
               <Tab.Screen name="Places" component={Places} />
               <Tab.Screen name="Favourite" component={Places} />
-              <Tab.Screen name="Reviews" component={Reviews} />
+              <Tab.Screen name="Reviews" component={ReviewsProfile} />
             </Tab.Navigator>
           </View>
         </TriggeringView>
       </ImageHeaderScrollView>
     </View>
-
-    // <ScrollView style={styles.container}>
-    //   <ImageBackground
-    //     source={{
-    //       uri: "https://image.freepik.com/free-photo/beautiful-scenery-green-valley-near-alp-mountains-austria-cloudy-sky_181624-6979.jpg",
-    //     }}
-    //     style={styles.imageBack}
-    //   >
-    //     <View style={styles.viewHeader}>
-    //       <TouchableOpacity onPress={() => navigation.goBack()}>
-    //         <Icon name="arrow-back" size={24} color="black" />
-    //       </TouchableOpacity>
-    //     </View>
-    //     <View style={styles.viewName}>
-    //       <Image
-    //         source={{
-    //           uri: "https://image.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg",
-    //         }}
-    //         style={styles.imgAvtr}
-    //       />
-    //       <Text style={styles.textName}>Alexio Morales</Text>
-    //     </View>
-    //   </ImageBackground>
-    //
-    // </ScrollView>
   );
 }
 

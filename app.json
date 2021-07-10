@@ -19,6 +19,11 @@
     },
     "android": {
       "package": "com.encodersoft.travel",
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyAhwDsbb1ky0UUyUXm-YlCDsD7diI83g9U"
+        }
+      },
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
