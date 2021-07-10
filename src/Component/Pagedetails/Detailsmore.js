@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import {
   View,
   Text,
@@ -9,33 +9,24 @@ import {
 } from "react-native";
 
 import MapView, { PROVIDER_GOOGLE, Marker, Callout } from "react-native-maps";
-
+import axios from "axios";
 import COLORS from "../../assets/colors/colors";
 import Icon from "@expo/vector-icons/MaterialIcons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 const url = "https://google.com";
 const phoneNumber = "+923092320065";
 export default function Detailsmore(props) {
-  var mylat = 0;
-  var mylong = 0;
+  const serverpoint = require("./../../config");
+  var mylat = props.placeid.latitude;
+  var mylong = props.placeid.longitude;
   var category = "";
   var GoogleRating = "";
   var Address = "";
   var TotalUSerRating = "";
   var placeType = "";
-  let checklat = props.placeid.latitude.toString();
-
-  let lastWord = checklat.substring(checklat.length - 3, checklat.length);
-
-  if (lastWord == "lat") {
-    ///  alert("no location");
-  } else {
-    mylat = props.placeid.latitude;
-    mylong = props.placeid.longitude;
-  }
 
   if (props.placeid.hasOwnProperty("category")) {
-    category = category = "Category:" + props.placeid.category;
+    category = "Category:" + props.placeid.category;
   }
   if (props.placeid.hasOwnProperty("rating")) {
     if (props.placeid.rating != null) {
@@ -82,6 +73,32 @@ export default function Detailsmore(props) {
     latitudeDelta: 0.0922,
     longitudeDelta: 0.0421,
   });
+
+  async function saveToDb() {
+    axios
+      .post(serverpoint.servername + "/savePlace", {
+        title: props.placeid.title,
+        latitude: props.placeid.latitude,
+        longitude: props.placeid.longitude,
+        category: category,
+        no: 124,
+        rating: "",
+        pic1: "",
+        pic2: "",
+        pic3: "",
+        pic4: "",
+        pic5: "",
+      })
+      .then(res => {
+        console.log(res.data);
+      });
+  }
+
+  useEffect(() => {
+    ///  checkReviews();
+    saveToDb();
+  }, []);
+
   return (
     <View style={styles.mainview}>
       <View style={styles.detailview}>
