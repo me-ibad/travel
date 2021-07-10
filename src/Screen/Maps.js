@@ -44,7 +44,6 @@ export default function Maps({ navigation, route }) {
 
   const [alllocations, setalllocations] = useState([]);
 
-  let origin = { latitude: lat, longitude: long };
   const destination = {
     latitude: placedata.latitude,
     longitude: placedata.longitude,
@@ -98,39 +97,29 @@ export default function Maps({ navigation, route }) {
   //   }
   // },[])
 
-  const isNavigationStopped = React.useMemo(() => {
-    const R = 6371e3; // metres
-    const φ1 = (origin.latitude * Math.PI) / 180; // φ, λ in radians
-    const φ2 = (destination.latitude * Math.PI) / 180;
-    const Δφ = ((destination.latitude - origin.latitude) * Math.PI) / 180;
-    const Δλ = ((destination.longitude - origin.longitude) * Math.PI) / 180;
+  const origin = React.useMemo(() => {
+    return {
+      latitude: lat,
+      longitude: long,
+    };
+  }, [lat, long]);
 
-    const a =
-      Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
-      Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    const res = R * c;
-    console.log(res / 1000);
-    return res / 1000; // in metres
-  }, [origin, destination]);
+  const getMylocation = async () => {
+    let location = await Location.getCurrentPositionAsync({});
+    setLocation(location);
+    setlat(location.coords.latitude);
 
-  console.log("isNavigationStopped", isNavigationStopped);
+    setlong(location.coords.longitude);
+  };
+
+  console.log(origin);
 
   React.useEffect(() => {
-    async function myApiCall() {
-      let location = await Location.watchPositionAsync(
-        { accuracy: Location.Accuracy.High },
-        (loc) => {
-          origin = {
-            latitude: loc.latitude,
-            longitude: loc.longitude,
-          };
-        }
-      );
-    }
-
-    myApiCall();
-  }, [isNavigationStopped]);
+    const interval = setInterval(() => {
+      getMylocation();
+    }, 6000);
+    return () => clearInterval(interval);
+  });
 
   let text = "Waiting..";
   if (errorMsg) {

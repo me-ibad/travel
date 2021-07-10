@@ -52,29 +52,9 @@ export default function Details({ navigation, route }) {
     checkReviews();
   }, []);
 
-<<<<<<< Updated upstream
-  // function switchToMap() {
-  //   let checklat = placedata.latitude.toString();
-
-  //   let lastWord = checklat.substring(checklat.length - 3, checklat.length);
-
-  //   if (lastWord == "lat") {
-  //     alert("no location");
-  //   } else {
-  //     navigation.navigate("Maps", { placedata: placedata });
-  //   }
-  // }
-  //   if (lastWord == "lat") {
-  //     alert("no location");
-  //   } else {
-  //     // navigation.navigate("Maps", { placedata: placedata });
-  //   }
-  // }
-=======
-  function switchToMap() {
+  function switchToMap(navigation, placedata) {
     navigation.navigate("Maps", { placedata: placedata });
   }
->>>>>>> Stashed changes
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
