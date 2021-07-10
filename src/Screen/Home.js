@@ -27,7 +27,6 @@ import { LinearGradient } from "expo-linear-gradient";
 import axios from "axios";
 import Icon from "@expo/vector-icons/MaterialIcons";
 import { getToken } from "../globalFunction/getToken";
-import { getTokenIntrests } from "../globalFunction/getToken";
 import { removetoken } from "../globalFunction/getToken";
 Feather.loadFont();
 Entypo.loadFont();
@@ -42,15 +41,16 @@ export function Home({ navigation }) {
   const serverpoint = require("../config");
 
   async function getlocationbymodel() {
-    var interests = await getTokenIntrests("interests");
+    var obje = await getToken("travelapp");
+    const userData = JSON.parse(obje);
 
     axios
       .post(serverpoint.servername + "/getLocations", {
         lat: "3434.434",
         long: "34343.3434",
-        interests: interests,
+        interests: userData.userInterests.map((value) => value.name),
       })
-      .then(res => {
+      .then((res) => {
         // alert(res.data)
         ////  console.log(res.data);
         ////alert(res.data);
@@ -59,22 +59,23 @@ export function Home({ navigation }) {
   }
 
   async function getDiscoverLocation() {
-    //// alert("ihsfisb");
-    var interests = await getTokenIntrests("interests");
+    var obje = await getToken("travelapp");
+    const userData = JSON.parse(obje);
+
     axios
       .post(serverpoint.servername + "/getDiscoverLocation", {
         lat: "3434.434",
         long: "34343.3434",
-        interests: interests,
+        interests: userData.userInterests.map((value) => value.name),
       })
-      .then(res => {
+      .then((res) => {
         // alert(res.data)
         ////   console.log(res.data);
         ////alert(res.data);
         setDiscoverLocation(res.data);
       });
   }
-  const gettoken = async key => {
+  const gettoken = async (key) => {
     try {
       const retrievedItem = await AsyncStorage.getItem(key);
       const item = JSON.parse(retrievedItem);
@@ -327,7 +328,7 @@ export function Home({ navigation }) {
               <FlatList
                 data={discoverLocation}
                 renderItem={renderDiscoverItem}
-                keyExtractor={item => item._id}
+                keyExtractor={(item) => item._id}
                 horizontal
                 showsHorizontalScrollIndicator={false}
               />
@@ -348,7 +349,7 @@ export function Home({ navigation }) {
               <FlatList
                 data={nearByLocation}
                 renderItem={renderLearnMoreItem}
-                keyExtractor={item => item._id}
+                keyExtractor={(item) => item._id}
                 horizontal
                 showsHorizontalScrollIndicator={false}
               />

@@ -45,13 +45,16 @@ export function Maps({ navigation, route }) {
   const [alllocations, setalllocations] = useState([]);
 
   const origin = { latitude: lat, longitude: long };
-  const destination = { latitude: 33.6844, longitude: 73.0479 };
+  const destination = {
+    latitude: placedata.latitude,
+    longitude: placedata.longitude,
+  };
   const GOOGLE_MAPS_APIKEY = config.mapapi;
   //const GOOGLE_MAPS_APIKEY = "";
 
   useEffect(() => {
     (async () => {
-      let { status } = await Location.requestPermissionsAsync();
+      let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== "granted") {
         setErrorMsg("Permission to access location was denied");
         return;
@@ -73,11 +76,19 @@ export function Maps({ navigation, route }) {
       // setLocation(location);
       // setlat(json[0].latitude);
       // setlong(json[0].longitude);
-      setlat(location.coords.olatitude);
+      setlat(location.coords.latitude);
 
       setlong(location.coords.longitude);
     })();
-  }, [lat, long]);
+  }, []);
+
+  // const liveLongAndLat=React.useMemo(()=>{
+  //   let location = await Location.getCurrentPositionAsync({});
+  //   return {
+  //     latitude:location.coords.latitude,
+  //     longitude:location.coords.longitude
+  //   }
+  // },[])
 
   let text = "Waiting..";
   if (errorMsg) {
@@ -98,39 +109,17 @@ export function Maps({ navigation, route }) {
         style={styles.map}
         region={getMapRegion()}
       >
+        <Marker coordinate={origin ?? {}} />
+        <Marker coordinate={destination ?? {}} />
         <MapViewDirections
-          origin={origin}
-          destination={destination}
+          origin={origin ?? {}}
+          destination={destination ?? {}}
           apikey={GOOGLE_MAPS_APIKEY}
-          strokeWidth={3}
+          lineCap="round"
+          strokeWidth={5}
           strokeColor="blue"
+          lineDashPattern={[0]}
         />
-
-        <Marker
-          coordinate={getMapRegion()}
-          title="Test Title"
-          description="This is the test description"
-        >
-          <Callout tooltip>
-            <View>
-              <View style={styles.bubble}>
-                <Text style={styles.name}>New Restaurant</Text>
-
-                <Text>{long}</Text>
-                <Text>{lat}</Text>
-                {/* <Text>A short description</Text> */}
-                <Image
-                  style={styles.image}
-                  source={
-                    "https://image.freepik.com/free-vector/international-women-s-day-illustration-with-profile-woman_52683-55776.jpg"
-                  }
-                />
-              </View>
-              <View style={styles.arrowBorder} />
-              <View style={styles.arrow} />
-            </View>
-          </Callout>
-        </Marker>
       </MapView>
       <View style={styles.searchBox}>
         <TextInput

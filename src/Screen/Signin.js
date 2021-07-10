@@ -16,6 +16,7 @@ import { AsyncStorage } from "react-native";
 import { useScreens } from "react-native-screens";
 
 import { getToken } from "../globalFunction/getToken";
+import { storetoken } from "../utils/helper";
 
 //  import * as Animatable from 'react-native-animatable';
 
@@ -62,12 +63,13 @@ export default function Signin({ navigation }) {
             fid: finalresponse.id,
             name: finalresponse.name,
           })
-          .then(res => {
+          .then((res) => {
             // alert(res.data)
             // console.log(res.data)
             storetoken("travelapp", res.data);
+            console.log("res.data", res.data);
 
-            if (interests == "") {
+            if (!res.data.userInterests.length) {
               navigation.navigate("Recommendation");
             } else {
               navigation.navigate("Home");
@@ -81,18 +83,6 @@ export default function Signin({ navigation }) {
       alert(`Facebook Login Error: ${message}`);
     }
   }
-
-  const storetoken = async (key, item) => {
-    try {
-      //we want to wait for the Promise returned by AsyncStorage.setItem()
-      //to be resolved to the actual value before returning the value
-      var jsonOfItem = await AsyncStorage.setItem(key, JSON.stringify(item));
-      console.log("Added in local host");
-      return jsonOfItem;
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
 
   async function googlelogin() {
     let interests = await getToken("interests");
@@ -112,10 +102,11 @@ export default function Signin({ navigation }) {
           gid: user.id,
           img: user.photoUrl,
         })
-        .then(res => {
+        .then((res) => {
           storetoken("travelapp", res.data);
+          console.log("res.data", res.data);
 
-          if (interests == "") {
+          if (!res.data.userInterests.length) {
             navigation.navigate("Recommendation");
           } else {
             navigation.navigate("Home");
@@ -147,8 +138,9 @@ export default function Signin({ navigation }) {
           email: username,
           pass: pass,
         })
-        .then(res => {
+        .then((res) => {
           storetoken("travelapp", res.data);
+          console.log("res.data", res.data);
 
           if (interests == "") {
             navigation.navigate("Recommendation");

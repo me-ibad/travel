@@ -14,11 +14,11 @@ var userschm = new mongoose.Schema({
   pass: String,
   email: String,
   pic: String,
-  follower:Number,
-  following:Number,
-  verify:String,
-  expotoken:String,
- 
+  follower: Number,
+  following: Number,
+  verify: String,
+  expotoken: String,
+  userInterests: { type: Array, default: [] },
 });
 
 var usersmodel = mongoose.model("users", userschm);

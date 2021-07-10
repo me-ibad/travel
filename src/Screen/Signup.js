@@ -14,6 +14,7 @@ import * as Google from "expo-google-app-auth";
 import axios from "axios";
 import { AsyncStorage } from "react-native";
 import { useScreens } from "react-native-screens";
+import { storetoken } from "../utils/helper";
 
 //  import * as Animatable from 'react-native-animatable';
 
@@ -82,10 +83,11 @@ export default function Signup({ navigation }) {
             fid: finalresponse.id,
             name: finalresponse.name,
           })
-          .then(res => {
+          .then((res) => {
             // alert(res.data)
             // console.log(res.data)
             storetoken("travelapp", res.data);
+            console.log("res.data", res.data);
           });
         ////  alert(final.id)
       } else {
@@ -95,34 +97,6 @@ export default function Signup({ navigation }) {
       alert(`Facebook Login Error: ${message}`);
     }
   }
-
-  const storetoken = async (key, item) => {
-    try {
-      //we want to wait for the Promise returned by AsyncStorage.setItem()
-      //to be resolved to the actual value before returning the value
-      var jsonOfItem = await AsyncStorage.setItem(key, JSON.stringify(item));
-      console.log("Added in local host");
-      return jsonOfItem;
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
-
-  const gettoken = async key => {
-    try {
-      const retrievedItem = await AsyncStorage.getItem(key);
-      const item = JSON.parse(retrievedItem);
-
-      if (item != null) {
-        return retrievedItem;
-      } else {
-        return "";
-      }
-    } catch (error) {
-      console.log(error.message);
-    }
-    return;
-  };
 
   async function googlelogin() {
     const { type, accessToken, user } = await Google.logInAsync({
@@ -140,7 +114,7 @@ export default function Signup({ navigation }) {
           gid: user.id,
           img: user.photoUrl,
         })
-        .then(res => {
+        .then((res) => {
           alert("Sign In for Login");
           console.log(res.data);
         });
@@ -179,7 +153,7 @@ export default function Signup({ navigation }) {
           email: username,
           pass: pass,
         })
-        .then(res => {
+        .then((res) => {
           alert("Sign In for Login");
         });
     }

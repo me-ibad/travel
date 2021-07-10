@@ -25,6 +25,7 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { removetoken } from "../globalFunction/getToken";
 
 import { Maps } from "../Screen/Maps";
+import { switchToMap } from "../utils/helper";
 var AnimatedImage = Animated.createAnimatedComponent(ImageBackground);
 const BANNER_H = 270;
 const TOPNAVI_H = 50;
@@ -32,37 +33,39 @@ const Tab = createMaterialTopTabNavigator();
 
 export default function Details({ navigation, route }) {
   const { placedata } = route.params;
-  console.log(placedata);
   const [avvgRating, setavvgRating] = React.useState("");
   const scrollA = useRef(new Animated.Value(0)).current;
-  const YourComponent = () => <Reviews placeid={placedata} />;
 
-  async function checkReviews() {
+  const ReviewsComp = () => <Reviews placeid={placedata} />;
+  const DetailsmoreComp = () => <Detailsmore placeid={placedata} />;
+
+  function checkReviews() {
     axios
       .post(serverpoint.servername + "/fetchReviews", {
         latitude: placedata.latitude,
         longitude: placedata.longitude,
       })
-      .then(res => {
+      .then((res) => {
+        console.log("response", res.data);
         // alert(res.data)
-        setavvgRating(res.data[0].averagerating);
+        setavvgRating(res.data[0]?.averagerating);
       });
   }
   useEffect(() => {
     checkReviews();
   }, []);
 
-  function switchToMap() {
-    let checklat = placedata.latitude.toString();
+  // function switchToMap() {
+  //   let checklat = placedata.latitude.toString();
 
-    let lastWord = checklat.substring(checklat.length - 3, checklat.length);
+  //   let lastWord = checklat.substring(checklat.length - 3, checklat.length);
 
-    if (lastWord == "lat") {
-      alert("no location");
-    } else {
-      navigation.navigate("Maps", { placedata: placedata });
-    }
-  }
+  //   if (lastWord == "lat") {
+  //     alert("no location");
+  //   } else {
+  //     navigation.navigate("Maps", { placedata: placedata });
+  //   }
+  // }
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
@@ -118,7 +121,9 @@ export default function Details({ navigation, route }) {
         </View>
         <View style={style.detailsContainer}>
           <View style={style.iconContainer}>
-            <TouchableOpacity onPress={() => switchToMap()}>
+            <TouchableOpacity
+              onPress={() => switchToMap(navigation, placedata)}
+            >
               <FontAwesome5 name="route" color={COLORS.dark} size={30} />
             </TouchableOpacity>
           </View>
@@ -142,11 +147,8 @@ export default function Details({ navigation, route }) {
           </Text> */}
         </View>
         <Tab.Navigator>
-          <Tab.Screen
-            name="Details"
-            component={() => <Detailsmore placeid={placedata} />}
-          />
-          <Tab.Screen name="Reviews" component={YourComponent} />
+          <Tab.Screen name="Details" component={DetailsmoreComp} />
+          <Tab.Screen name="Reviews" component={ReviewsComp} />
           {/* component={Reviews}
           /> */}
           {/* <Tab.Screen name="Pictures" component={Placepics} /> */}
@@ -245,7 +247,7 @@ const style = StyleSheet.create({
     alignItems: "center",
     overflow: "hidden",
   },
-  banner: scrollA => ({
+  banner: (scrollA) => ({
     height: BANNER_H,
     // flex: 0.5,
     width: "100%",
