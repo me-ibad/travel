@@ -52,6 +52,7 @@ export default function Details({ navigation, route }) {
     checkReviews();
   }, []);
 
+<<<<<<< Updated upstream
   // function switchToMap() {
   //   let checklat = placedata.latitude.toString();
 
@@ -69,6 +70,11 @@ export default function Details({ navigation, route }) {
   //     // navigation.navigate("Maps", { placedata: placedata });
   //   }
   // }
+=======
+  function switchToMap() {
+    navigation.navigate("Maps", { placedata: placedata });
+  }
+>>>>>>> Stashed changes
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>

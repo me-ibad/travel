@@ -5,8 +5,27 @@ const config = require("../../config/config");
 var url = config.mongoURI;
 var dbnmae = config.dbnmae;
 const spawn = require("child_process").spawn;
-
+const { Places } = require("../../model/Places");
 module.exports = function (router) {
+  router.post("/savePlace", async (req, res) => {
+    await Places.findOne(
+      {
+        latitude: req.body.latitude,
+        longitude: req.body.longitude,
+      },
+      async function (err, result) {
+        if (result != null) {
+        } else {
+          await Places.create(req.body, function (err, res) {
+            if (err) throw err;
+            ////console.log("1 document inserted");
+            /// res1.json("Request For Approvel Has been  Sent");
+            /// db.close();
+          });
+        }
+      }
+    );
+  });
   router.post("/getLocations", (req, res) => {
     console.log("its orginal only here kjbdsbkfsdkjbfksj");
     var lat = 74.2227181;
