@@ -61,7 +61,7 @@ const AppNavigator = () => {
   const [myid, setmyid] = useState("");
 
   const [start, setstart] = useState(false);
-  const gettoken = async key => {
+  const gettoken = async (key) => {
     try {
       const retrievedItem = await AsyncStorage.getItem(key);
       const item = JSON.parse(retrievedItem);
@@ -116,7 +116,7 @@ const AppNavigator = () => {
             <Stack.Screen name="Recommendation" component={Recommendation} />
             <Stack.Screen name="Search" component={Searchpage} />
             <Stack.Screen name="Settings" component={Settings} />
-            {/* <Tab.Screen name="Maps" component={Maps} /> */}
+            <Tab.Screen name="Maps" component={Maps} />
             <Stack.Screen name="Signup" component={Signup} />
             <Stack.Screen name="Test" component={Test} />
 

@@ -116,7 +116,7 @@ export default function Details({ navigation, route }) {
                     fontSize: 20,
                   }}
                 >
-                  {avvgRating.toString().substring(0, 3)}
+                  {avvgRating?.toString().substring(0, 3)}
                 </Text>
               </View>
             </View>

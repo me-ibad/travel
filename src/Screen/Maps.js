@@ -26,7 +26,7 @@ const { width, height } = Dimensions.get("window");
 const CARD_HEIGHT = 220;
 const CARD_WIDTH = width * 0.8;
 
-export function Maps({ navigation, route }) {
+export default function Maps({ navigation, route }) {
   const { placedata } = route.params ?? {};
   var mylat = 0;
   var mylong = 0;
