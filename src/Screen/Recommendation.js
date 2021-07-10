@@ -179,6 +179,15 @@ export default function Recommendation({ navigation, route }) {
       </View>
 
       <TouchableOpacity
+        style={{
+          width: 100,
+          backgroundColor: "#0d47a1",
+          padding: 10,
+          elevation: 2,
+          alignItems: "center",
+          justifyContent: "center",
+          borderRadius: 40,
+        }}
         onPress={handleClick}
         style={{ marginLeft: 10, paddingHorizontal: 50 }}
       >

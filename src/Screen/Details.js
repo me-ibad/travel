@@ -14,8 +14,7 @@ import axios from "axios";
 import Icon from "@expo/vector-icons/MaterialIcons";
 import COLORS from "../assets/colors/colors";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
-import Profile from "./Profile";
-import Signin from "./Signin";
+
 import Detailsmore from "../Component/Pagedetails/Detailsmore";
 const serverpoint = require("../config");
 import Reviews from "../Component/Pagedetails/Reviews";
@@ -24,7 +23,6 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { removetoken } from "../globalFunction/getToken";
 
-import { Maps } from "../Screen/Maps";
 var AnimatedImage = Animated.createAnimatedComponent(ImageBackground);
 const BANNER_H = 270;
 const TOPNAVI_H = 50;
@@ -60,7 +58,7 @@ export default function Details({ navigation, route }) {
     if (lastWord == "lat") {
       alert("no location");
     } else {
-      navigation.navigate("Maps", { placedata: placedata });
+      // navigation.navigate("Maps", { placedata: placedata });
     }
   }
 
@@ -147,9 +145,8 @@ export default function Details({ navigation, route }) {
             component={() => <Detailsmore placeid={placedata} />}
           />
           <Tab.Screen name="Reviews" component={YourComponent} />
-          {/* component={Reviews}
-          /> */}
-          {/* <Tab.Screen name="Pictures" component={Placepics} /> */}
+
+          <Tab.Screen name="Pictures" component={Placepics} />
         </Tab.Navigator>
         {/* <View style={style.footer}>
   <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
