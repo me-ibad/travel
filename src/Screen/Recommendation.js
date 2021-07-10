@@ -76,7 +76,14 @@ export default function Recommendation({ navigation, route }) {
 
     storetoken("interests", interests);
 
-    navigation.navigate("Home");
+    navigation.reset({
+      index: 0,
+      routes: [
+        {
+          name: "Home",
+        },
+      ],
+    });
   };
 
   return (
