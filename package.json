@@ -30,6 +30,7 @@
     "react-native-gesture-handler": "~1.10.2",
     "react-native-google-places-autocomplete": "^2.2.0",
     "react-native-grid-image-viewer": "^1.2.2",
+    "react-native-image-base64": "^0.1.4",
     "react-native-image-header-scroll-view": "^1.0.0",
     "react-native-maps": "0.28.0",
     "react-native-maps-directions": "^1.8.0",

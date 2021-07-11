@@ -21,8 +21,9 @@ import Reviews from "../Component/Pagedetails/Reviews";
 import Placepics from "../Component/Pagedetails/Placepics";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { removetoken } from "../globalFunction/getToken";
+import { getToken } from "../globalFunction/getToken";
 import { switchToMap } from "../utils/helper";
+import navigationService from "../globalFunction/NavigationService";
 var AnimatedImage = Animated.createAnimatedComponent(ImageBackground);
 const BANNER_H = 270;
 const TOPNAVI_H = 50;
@@ -42,7 +43,7 @@ export default function Details({ navigation, route }) {
         latitude: placedata.latitude,
         longitude: placedata.longitude,
       })
-      .then((res) => {
+      .then(res => {
         console.log("response", res.data);
         // alert(res.data)
         setavvgRating(res.data[0]?.averagerating);
@@ -52,29 +53,36 @@ export default function Details({ navigation, route }) {
     checkReviews();
   }, []);
 
-<<<<<<< Updated upstream
-  // function switchToMap() {
-  //   let checklat = placedata.latitude.toString();
-
-  //   let lastWord = checklat.substring(checklat.length - 3, checklat.length);
-
-  //   if (lastWord == "lat") {
-  //     alert("no location");
-  //   } else {
-  //     navigation.navigate("Maps", { placedata: placedata });
-  //   }
-  // }
-  //   if (lastWord == "lat") {
-  //     alert("no location");
-  //   } else {
-  //     // navigation.navigate("Maps", { placedata: placedata });
-  //   }
-  // }
-=======
-  function switchToMap() {
-    navigation.navigate("Maps", { placedata: placedata });
+  async function likeIt() {
+    var userdata = await getToken("travelapp");
+    axios.post(serverpoint.servername + "/postLikedplaces", {
+      uploderid: JSON.parse(userdata)._id,
+      latitude: placedata.latitude,
+      longitude: placedata.longitude,
+    });
   }
->>>>>>> Stashed changes
+  async function switchToMap() {
+    var userdata = await getToken("travelapp");
+
+    axios.post(serverpoint.servername + "/postVisitedplaces", {
+      uploderid: JSON.parse(userdata)._id,
+      latitude: placedata.latitude,
+      longitude: placedata.longitude,
+    });
+    ////  navigation.navigate("Maps", { placedata: placedata });
+
+    // navigation.reset({
+    //   index: 0,
+    //   routes: [
+    //     {
+    //       name: "Profile",
+    //       params: {
+    //         currentCity: "ffffffffffffffffffffffffff",
+    //       },
+    //     },
+    //   ],
+    // });
+  }
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
@@ -134,6 +142,12 @@ export default function Details({ navigation, route }) {
               onPress={() => switchToMap(navigation, placedata)}
             >
               <FontAwesome5 name="route" color={COLORS.dark} size={30} />
+            </TouchableOpacity>
+          </View>
+
+          <View style={style.iconContainer1}>
+            <TouchableOpacity onPress={() => likeIt(navigation, placedata)}>
+              <FontAwesome5 name="gratipay" color={COLORS.dark} size={30} />
             </TouchableOpacity>
           </View>
 
@@ -214,6 +228,18 @@ const style = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  iconContainer1: {
+    height: 60,
+    width: 60,
+    position: "absolute",
+    top: -100,
+    backgroundColor: COLORS.white,
+    borderRadius: 30,
+    right: 20,
+    elevation: 10,
+    justifyContent: "center",
+    alignItems: "center",
+  },
   detailsContainer: {
     top: -30,
     borderTopLeftRadius: 30,
@@ -254,7 +280,7 @@ const style = StyleSheet.create({
     alignItems: "center",
     overflow: "hidden",
   },
-  banner: (scrollA) => ({
+  banner: scrollA => ({
     height: BANNER_H,
     // flex: 0.5,
     width: "100%",

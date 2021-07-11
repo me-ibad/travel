@@ -18,28 +18,49 @@ const MIN_HEIGHT = 400;
 import COLORS from "../../assets/colors/colors";
 import { FontAwesome } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
-export default function Places() {
+export default function Places(props) {
+  async function switchToLocation(item) {
+    console.log(item.reviewplaces);
+    props.navigation.navigate("Details", {
+      placedata: item.reviewplaces[0],
+      from: "database",
+    });
+  }
+
   return (
     <View style={styles.container}>
-      <View style={styles.viewCard}>
-        <Image
-          source={{
-            uri: "https://image.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg",
-          }}
-          style={styles.imgAvtr}
-        />
-
-        <View style={styles.viewName}>
-          <Text style={styles.testName}>Name</Text>
-        </View>
-
-        <View style={styles.iconContainer}>
-          <TouchableOpacity>
-            <FontAwesome5 name="route" color={COLORS.dark} size={25} />
-          </TouchableOpacity>
-        </View>
-      </View>
-      <View style={styles.divider} />
+      {props.hasOwnProperty("reviewPlaces") == true ? (
+        <>
+          {props.reviewPlaces.map((s, i) => (
+            <>
+              <View style={styles.viewCard}>
+                <Image
+                  source={{
+                    uri:
+                      s.reviewplaces[0].pic1 == ""
+                        ? "https://www.panpuri.com/asset/images/product/noimg.jpg"
+                        : s.reviewplaces[0].pic1,
+                  }}
+                  style={styles.imgAvtr}
+                />
+                <TouchableOpacity onPress={() => switchToLocation(s)}>
+                  <View style={styles.viewName}>
+                    <Text style={styles.testName}>
+                      {s.reviewplaces[0].title}
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+                <View style={styles.iconContainer}>
+                  <TouchableOpacity>
+                    <FontAwesome5 name="route" color={COLORS.dark} size={25} />
+                  </TouchableOpacity>
+                </View>
+              </View>
+              <View style={styles.divider} />
+            </>
+          ))}
+        </>
+      ) : null}
     </View>
   );
 }

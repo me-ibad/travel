@@ -1,7 +1,8 @@
 const mongoose = require("mongoose");
 
 const Places = mongoose.model(
-  "Places",
+  "places",
+
   new mongoose.Schema({
     no: {
       type: Number,
@@ -10,6 +11,7 @@ const Places = mongoose.model(
     placeUrl: {
       type: String,
     },
+
     title: {
       type: String,
     },

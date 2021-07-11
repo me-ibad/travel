@@ -84,4 +84,29 @@ module.exports = function (router) {
     console.log(allposts);
     res.json(allposts);
   });
+
+  router.post("/fetchUserReview", async (req, res) => {
+    var allposts = [];
+
+    allposts = await Rating.aggregate([
+      {
+        $match: {
+          uploderid: ObjectId(req.body.userId),
+        },
+      },
+      {
+        $lookup: {
+          from: "places",
+
+          localField: "latitude",
+          foreignField: "latitude",
+          localField: "longitude",
+          foreignField: "longitude",
+          as: "reviewplaces",
+        },
+      },
+    ]);
+    console.log(allposts[0]);
+    res.json(allposts);
+  });
 };

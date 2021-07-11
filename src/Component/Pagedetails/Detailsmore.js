@@ -94,6 +94,21 @@ export default function Detailsmore(props) {
       });
   }
 
+  // <View style={styles.mapview}>
+  //       <MapView
+  //         provider={PROVIDER_GOOGLE} // remove if not using Google Maps
+  //         style={styles.map}
+  //         initialRegion={getMapRegion()}
+  //       >
+  //         {/* <Marker
+  //           coordinate={getMapRegion()}
+  //           title="Test Title"
+  //           description="This is the test description"
+  //         >
+  //           <Callout tooltip></Callout>
+  //         </Marker> */}
+  //       </MapView>
+  //     </View>
   useEffect(() => {
     ///  checkReviews();
     saveToDb();
@@ -131,22 +146,6 @@ export default function Detailsmore(props) {
             <Text style={styles.detailtext}>{placeType}</Text>
           ) : null}
         </TouchableOpacity>
-      </View>
-
-      <View style={styles.mapview}>
-        <MapView
-          provider={PROVIDER_GOOGLE} // remove if not using Google Maps
-          style={styles.map}
-          initialRegion={getMapRegion()}
-        >
-          {/* <Marker
-            coordinate={getMapRegion()}
-            title="Test Title"
-            description="This is the test description"
-          >
-            <Callout tooltip></Callout>
-          </Marker> */}
-        </MapView>
       </View>
     </View>
   );

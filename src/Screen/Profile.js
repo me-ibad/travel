@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import {
   ImageBackground,
   Dimensions,
@@ -13,6 +13,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import COLORS from "../assets/colors/colors";
+import axios from "axios";
 import Icon from "@expo/vector-icons/MaterialIcons";
 import Reviews from "../Component/Pagedetails/Reviews";
 import Detailsmore from "../Component/Pagedetails/Detailsmore";
@@ -24,15 +25,74 @@ import {
 import Favourite from "../Component/ProfilePage/Favourite";
 import { Colors } from "react-native/Libraries/NewAppScreen";
 import Places from "../Component/Pagedetails/Places";
+
 import ReviewsProfile from "../Component/ProfilePage/ReviewsProfile";
+import { getToken } from "../globalFunction/getToken";
+import { set } from "react-native-reanimated";
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
 const MIN_HEIGHT = Platform.OS === "ios" ? 90 : 55;
 const MAX_HEIGHT = 250;
 const Tab = createMaterialTopTabNavigator();
 
-export default function Profile({ navigation }) {
+export default function Profile({ navigation, route }) {
+  const [userData, setuserData] = React.useState("");
+  const [reviewPlaces, setreviewPlaces] = React.useState([]);
+  const [favPlaces, setfavPlaces] = React.useState([]);
+  const [vistedPlaces, setvistedPlaces] = React.useState([]);
+
   const navTitleView = useRef(null);
+  const serverpoint = require("../config");
+  async function fetchReviewsPlaces(id) {
+    axios
+      .post(serverpoint.servername + "/fetchUserReview", {
+        userId: id,
+      })
+      .then(res => {
+        setreviewPlaces(res.data);
+      });
+  }
+  async function fetchFavPlaces(id) {
+    axios
+      .post(serverpoint.servername + "/fetchUserFavplaces", {
+        userId: id,
+      })
+      .then(res => {
+        setfavPlaces(res.data);
+      });
+  }
+  async function fetchVistedPlaces(id) {
+    axios
+      .post(serverpoint.servername + "/fetchUserVistedplaces", {
+        userId: id,
+      })
+      .then(res => {
+        setvistedPlaces(res.data);
+      });
+  }
+
+  const ReviewComp = () => (
+    <Places reviewPlaces={reviewPlaces} navigation={navigation} />
+  );
+
+  const FavComp = () => (
+    <Places reviewPlaces={favPlaces} navigation={navigation} />
+  );
+  const VisitComp = () => (
+    <Places reviewPlaces={vistedPlaces} navigation={navigation} />
+  );
+  async function fetchUserData() {
+    var obje = await getToken("travelapp");
+    let data = JSON.parse(obje);
+    fetchReviewsPlaces(data._id);
+    fetchFavPlaces(data._id);
+    fetchVistedPlaces(data._id);
+    setuserData(data);
+  }
+
+  useEffect(() => {
+    fetchUserData();
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -65,13 +125,20 @@ export default function Profile({ navigation }) {
             </View>
             <View style={styles.viewForeground}>
               <View style={styles.viewName}>
-                <Image
-                  source={{
-                    uri: "https://image.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg",
-                  }}
-                  style={styles.imgAvtr}
-                />
-                <Text style={styles.textName}>Alexio Morales</Text>
+                {userData != "" ? (
+                  <>
+                    <Image
+                      source={{
+                        uri: userData.img,
+                      }}
+                      style={styles.imgAvtr}
+                    />
+                  </>
+                ) : null}
+
+                <Text style={styles.textName}>
+                  {userData != "" ? <>{userData.fname}</> : null}
+                </Text>
               </View>
             </View>
           </View>
@@ -89,9 +156,9 @@ export default function Profile({ navigation }) {
         >
           <View style={styles.viewTabs}>
             <Tab.Navigator>
-              <Tab.Screen name="Places" component={Places} />
-              <Tab.Screen name="Favourite" component={Places} />
-              <Tab.Screen name="Reviews" component={ReviewsProfile} />
+              <Tab.Screen name="Places" component={VisitComp} />
+              <Tab.Screen name="Favourite" component={FavComp} />
+              <Tab.Screen name="Reviews" component={ReviewComp} />
             </Tab.Navigator>
           </View>
         </TriggeringView>

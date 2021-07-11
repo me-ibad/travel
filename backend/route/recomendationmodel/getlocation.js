@@ -8,6 +8,9 @@ const spawn = require("child_process").spawn;
 const { Places } = require("../../model/Places");
 module.exports = function (router) {
   router.post("/savePlace", async (req, res) => {
+    console.log(
+      "----------------------------------------------------------------------------------------------"
+    );
     await Places.findOne(
       {
         latitude: req.body.latitude,
@@ -15,11 +18,13 @@ module.exports = function (router) {
       },
       async function (err, result) {
         if (result != null) {
+          console.log("founded");
+          res.json("Request For Approvel Has been  Sent");
         } else {
           await Places.create(req.body, function (err, res) {
             if (err) throw err;
-            ////console.log("1 document inserted");
-            /// res1.json("Request For Approvel Has been  Sent");
+            console.log("1 document inserted");
+            res.json("Request For Approvel Has been  Sent");
             /// db.close();
           });
         }
@@ -39,7 +44,7 @@ module.exports = function (router) {
       // const result1 = await dbo.collection("model").find({id:1}).toArray();
       // console.log("result1", result1);
       const result = await dbo
-        .collection("model")
+        .collection("places")
         .aggregate(
           [
             {
@@ -102,7 +107,7 @@ module.exports = function (router) {
 
       console.log(
         "result",
-        result.map((value) => value.calDistance)
+        result.map(value => value.calDistance)
       );
       res.json(result);
     });
@@ -216,7 +221,7 @@ module.exports = function (router) {
       // const result1 = await dbo.collection("model").find({id:1}).toArray();
       // console.log("result1", result1);
       const result = await dbo
-        .collection("model")
+        .collection("places")
         .aggregate(
           [
             {
@@ -292,7 +297,7 @@ module.exports = function (router) {
 
       console.log(
         "result",
-        result.map((value) => value.rating)
+        result.map(value => value.rating)
       );
       res.json(result);
     });

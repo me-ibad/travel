@@ -12,17 +12,65 @@ import {
   TouchableOpacity,
 } from "react-native";
 const w = Dimensions.get("window").width;
+import axios from "axios";
 const h = Dimensions.get("window").height;
+import { getToken } from "../globalFunction/getToken";
 import * as ImagePicker from "expo-image-picker";
 import Navbar from "../Component/Navbar/Navbar";
-
+import ImgToBase64 from "react-native-image-base64";
+import { storetoken } from "../utils/helper";
 export default function Settings() {
-  const [image, setImage] = useState(
+  const serverpoint = require("../config");
+  const [profileImage, setprofileImage] = useState(
     "https://image.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg"
   );
 
-  useEffect(() => {}, []);
+  const [fname, setfname] = useState("");
+  const [id, setid] = useState("");
+  const [lname, setlname] = useState("");
+  const [userName, setuserName] = useState("");
+  // const [oldPass, setoldPass] = useState("");
+  // const [newPass, setnewPass] = useState("");
+  // const [cPass, setcPass] = useState("");
 
+  // const [oldPassInput, setoldPassInput] = useState("");
+
+  async function getLocalData() {
+    var obje = await getToken("travelapp");
+    let data = JSON.parse(obje);
+    setid(data._id);
+    setfname(data.fname);
+    setprofileImage(data.img);
+    setuserName(data.email);
+    setlname(data.lname);
+  }
+
+  useEffect(() => {
+    getLocalData();
+  }, []);
+
+  const updateProfile = async () => {
+    var obje = await getToken("travelapp");
+    let data = JSON.parse(obje);
+
+    data.fname = fname;
+    data.lname = lname;
+    data.img = profileImage;
+    data.email = userName;
+
+    storetoken("travelapp", data);
+    axios
+      .post(serverpoint.servername + "/usersemail/updateProfile", {
+        _id: id,
+        fname: fname,
+        lname: lname,
+        img: profileImage,
+        email: userName,
+      })
+      .then(res => {
+        alert(res.data);
+      });
+  };
   const pickImage = async () => {
     (async () => {
       if (Platform.OS !== "web") {
@@ -37,14 +85,13 @@ export default function Settings() {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
+      base64: true,
       aspect: [4, 3],
-      quality: 1,
+      quality: 0.1,
     });
 
-    console.log(result);
-
     if (!result.cancelled) {
-      setImage(result.uri);
+      setprofileImage("data:image/png;base64," + result.base64);
     }
   };
 
@@ -53,10 +100,10 @@ export default function Settings() {
       <Navbar name="Settings" />
       <ScrollView>
         <View style={styles.viewBody}>
-          {image && (
+          {profileImage && (
             <Image
               source={{
-                uri: image,
+                uri: profileImage,
               }}
               style={styles.imgAvtr}
             />
@@ -74,8 +121,9 @@ export default function Settings() {
           <TextInput
             style={styles.textInput}
             placeholderTextColor="black"
-            placeholder="Name"
-            //   onChangeText={setname}
+            placeholder="First Name"
+            value={fname}
+            onChangeText={setfname}
           />
         </View>
 
@@ -83,18 +131,28 @@ export default function Settings() {
           <TextInput
             style={styles.textInput}
             placeholderTextColor="black"
-            placeholder="Username"
-            //   onChangeText={setname}
+            placeholder="Last Name"
+            value={lname}
+            onChangeText={setlname}
           />
         </View>
-
+        <View style={styles.viewInput}>
+          <TextInput
+            style={styles.textInput}
+            placeholderTextColor="black"
+            placeholder="Username"
+            value={userName}
+            onChangeText={setuserName}
+          />
+        </View>
+        {/* 
         <View style={styles.viewInput}>
           <TextInput
             style={styles.textInput}
             placeholderTextColor="black"
             placeholder="Old Password"
             secureTextEntry={true}
-            //   onChangeText={setname}
+            onChangeText={setoldPassInput}
           />
         </View>
 
@@ -104,7 +162,7 @@ export default function Settings() {
             placeholderTextColor="black"
             placeholder="New Password"
             secureTextEntry={true}
-            //   onChangeText={setname}
+            onChangeText={setnewPass}
           />
         </View>
 
@@ -114,11 +172,11 @@ export default function Settings() {
             placeholderTextColor="black"
             placeholder="Confirm Password"
             secureTextEntry={true}
-            //   onChangeText={setname}
+            onChangeText={setcPass}
           />
-        </View>
+        </View> */}
 
-        <TouchableOpacity style={styles.buttonStyl}>
+        <TouchableOpacity style={styles.buttonStyl} onPress={updateProfile}>
           <Text style={styles.buttonTest}>Update</Text>
         </TouchableOpacity>
       </ScrollView>

@@ -4,6 +4,41 @@ const router = express.Router();
 const { Users } = require("../../model/Users");
 
 const ObjectId = require("mongodb").ObjectID;
+router.post("/updateProfile", async (req, res1) => {
+  await Users.findOne(
+    {
+      email: req.body.email,
+    },
+    async function (err, result) {
+      console.log("----------------");
+      console.log(result);
+      console.log("----------------");
+      if (result != null) {
+        await Users.updateOne(
+          {
+            _id: ObjectId(req.body._id),
+          },
+          {
+            $set: {
+              fname: req.body.fname,
+              lname: req.body.lname,
+              img: req.body.img,
+            },
+          },
+          async function (err, res) {
+            if (err) throw err;
+            ////console.log("1 document updated");
+
+            //////  db.close();
+            res1.json("Profile Updated");
+          }
+        );
+      } else {
+        res1.json("Email Already Exist");
+      }
+    }
+  );
+});
 
 router.post("/signinemail", (req, res1) => {
   Users.find(

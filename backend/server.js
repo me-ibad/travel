@@ -13,6 +13,7 @@ const path = require("path");
 
 const getlocation = require("./route/recomendationmodel/getlocation");
 const review = require("./route/reviews/breviews");
+const plscesDetails = require("./route/reviews/plscesDetails");
 const comments = require("./route/reviews/comments");
 const sociallogin = require("./route/Registration/sociallogin");
 const userInterests = require("./route/UserInterests/userInterests");
@@ -59,6 +60,7 @@ sociallogin(app);
 emaillogin(app);
 comments(app);
 userInterests(app);
+plscesDetails(app);
 
 app.get("/getResult", (req, res1) => {
   console.log(req.body);
@@ -88,8 +90,8 @@ app.get("/", (req, res) => {
 
 const port = process.env.PORT || 5000;
 server.listen(port, () => console.log(`server is running ${port}`));
-io.on("connection", (socket) => {});
-io.on("connection", (socket) => {});
+io.on("connection", socket => {});
+io.on("connection", socket => {});
 
 // const express = require("express");
 // const app = require("express")();

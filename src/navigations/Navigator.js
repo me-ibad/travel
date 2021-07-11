@@ -11,7 +11,7 @@ import { Home } from "../Screen/Home";
 import Signin from "../Screen/Signin";
 import Signup from "../Screen/Signup";
 import Test from "../Screen/Test";
-
+import { getToken } from "../globalFunction/getToken";
 import Details from "../Screen/Details";
 import Searchpage from "../Screen/Searchpage";
 import { AsyncStorage } from "react-native";
@@ -21,7 +21,11 @@ import Recommendation from "../Screen/Recommendation";
 import Settings from "../Screen/Settings";
 
 const Tab = createBottomTabNavigator();
+
 const BottomTabNavigator = () => {
+  const tabBarListeners = ({ navigation }) => ({
+    tabPress: () => navigation.navigate("Profile"),
+  });
   return (
     <Tab.Navigator
       barStyle={{ backgroundColor: "#694fad" }}
@@ -48,7 +52,11 @@ const BottomTabNavigator = () => {
     >
       <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="Map" component={Test} />
-      <Tab.Screen name="Profile" component={Profile} />
+      <Tab.Screen
+        name="Profile"
+        component={Profile}
+        listeners={tabBarListeners}
+      />
     </Tab.Navigator>
   );
 };
@@ -61,14 +69,14 @@ const AppNavigator = () => {
   const [myid, setmyid] = useState("");
 
   const [start, setstart] = useState(false);
-  const gettoken = async (key) => {
+  const gettoken = async key => {
     try {
       const retrievedItem = await AsyncStorage.getItem(key);
       const item = JSON.parse(retrievedItem);
 
       if (item != null) {
-        setmyid(retrievedItem);
-
+        setmyid(item._id);
+        console.log(item._id);
         setstart(true);
 
         return retrievedItem;
