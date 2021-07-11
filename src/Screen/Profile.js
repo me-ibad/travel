@@ -92,7 +92,7 @@ export default function Profile({ navigation, route }) {
 
   useEffect(() => {
     fetchUserData();
-  }, []);
+  }, [route.params]);
 
   return (
     <View style={styles.container}>

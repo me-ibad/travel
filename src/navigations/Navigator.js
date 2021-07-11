@@ -24,7 +24,7 @@ const Tab = createBottomTabNavigator();
 
 const BottomTabNavigator = () => {
   const tabBarListeners = ({ navigation }) => ({
-    tabPress: () => navigation.navigate("Profile"),
+    tabPress: () => navigation.navigate("Profile", { itsparam: "hahahhaha" }),
   });
   return (
     <Tab.Navigator
