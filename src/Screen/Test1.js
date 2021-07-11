@@ -78,6 +78,169 @@ export default function Test1({ navigation, route }) {
       ) : null}
 
       <Text>{""}</Text>
+      {/* <ScrollView
+        horizontal
+        scrollEventThrottle={1}
+        showsHorizontalScrollIndicator={false}
+        height={50}
+        style={styles.chipsScrollView}
+        contentInset={{
+          // iOS only
+          top: 0,
+          left: 0,
+          bottom: 0,
+          right: 20,
+        }}
+        contentContainerStyle={{
+          paddingRight: Platform.OS === "android" ? 20 : 0,
+        }}
+      >
+        <TouchableOpacity style={styles.chipsItem}>
+          <FontAwesome name="hotel" size={24} color="black" />
+          <Text> Hotel</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.chipsItem}>
+          <AntDesign name="rest" size={24} color="black" />
+          <Text> Restaurants</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.chipsItem}>
+          <FontAwesome5 name="place-of-worship" size={24} color="black" />
+          <Text> Historical</Text>
+        </TouchableOpacity>
+      </ScrollView>
+
+      <ScrollView
+        horizontal
+        scrollEventThrottle={1}
+        showsHorizontalScrollIndicator={false}
+        height={500}
+        style={styles.chipsScrollView1}
+        contentContainerStyle={{
+          paddingRight: Platform.OS === "android" ? 20 : 0,
+        }}
+      >
+        <View
+          style={{
+            backgroundColor: "#FEFEFE",
+            height: 200,
+            width: 190,
+            borderRadius: 15,
+            padding: 5,
+          }}
+        >
+          <Image
+            source={require("../assets/images/beach.png")}
+            style={{ width: 180, borderRadius: 10, height: 130 }}
+          />
+          <View
+            style={{
+              flexDirection: "row",
+              width: 150,
+              alignItems: "center",
+            }}
+          >
+            <View
+              style={{
+                paddingHorizontal: 5,
+                paddingVertical: 5,
+              }}
+            >
+              <Text
+                style={{
+                  fontSize: 16,
+                  color: "black",
+                }}
+              >
+                Kalar Khar Lake
+              </Text>
+            </View>
+            <Iconui name="map-marker" size={25} color="#ff5c83" />
+          </View>
+          <Rating size={2} imageSize={16} startingValue={4.3} />
+        </View>
+
+        <View
+          style={{
+            backgroundColor: "#FEFEFE",
+            height: 200,
+            width: 190,
+            borderRadius: 15,
+            padding: 5,
+            marginHorizontal: 20,
+          }}
+        >
+          <Image
+            source={require("../assets/images/beach.png")}
+            style={{ width: 180, borderRadius: 10, height: 130 }}
+          />
+          <View
+            style={{
+              flexDirection: "row",
+              width: 150,
+              alignItems: "center",
+            }}
+          >
+            <View
+              style={{
+                paddingHorizontal: 5,
+                paddingVertical: 5,
+              }}
+            >
+              <Text
+                style={{
+                  fontSize: 16,
+                  color: "black",
+                }}
+              >
+                Honza Vally
+              </Text>
+            </View>
+            <Iconui name="map-marker" size={25} color="#5facdb" />
+          </View>
+
+          <Rating size={2} imageSize={16} startingValue={3.3} />
+        </View>
+
+        <View
+          style={{
+            backgroundColor: "#FEFEFE",
+            height: 200,
+            width: 190,
+            borderRadius: 15,
+            padding: 5,
+          }}
+        >
+          <Image
+            source={require("../assets/images/beach.png")}
+            style={{ width: 180, borderRadius: 10, height: 130 }}
+          />
+          <View
+            style={{
+              flexDirection: "row",
+              width: 150,
+              alignItems: "center",
+            }}
+          >
+            <View
+              style={{
+                paddingHorizontal: 5,
+                paddingVertical: 5,
+              }}
+            >
+              <Text
+                style={{
+                  fontSize: 11,
+                  color: "#a2a2db",
+                }}
+              >
+                Lorem impsum dolor sit amet, consectetuer adipscing elit,
+              </Text>
+            </View>
+            <Iconui name="map-marker" size={25} color="#bb32fe" />
+          </View>
+        </View>
+      </ScrollView> */}
     </ScrollView>
   );
 }

@@ -69,7 +69,7 @@ export default function Details({ navigation, route }) {
       latitude: placedata.latitude,
       longitude: placedata.longitude,
     });
-    ////  navigation.navigate("Maps", { placedata: placedata });
+    navigation.navigate("Maps", { placedata: placedata });
 
     // navigation.reset({
     //   index: 0,
