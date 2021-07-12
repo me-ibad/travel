@@ -1,32 +1,32 @@
 import React, { useState, useEffect } from "react";
 import MapViewDirections from "react-native-maps-directions";
-
 import MapView, { PROVIDER_GOOGLE, Marker, Callout } from "react-native-maps";
 import {
+  Platform,
   StyleSheet,
-  ScrollView,
-  Image,
-  Text,
   TextInput,
   TouchableOpacity,
-  Animated,
   View,
   Dimensions,
-  StatusBar,
+  Text,
 } from "react-native";
 import Icon from "@expo/vector-icons/Ionicons";
-import { AntDesign, FontAwesome5 } from "@expo/vector-icons";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-import Iconui from "@expo/vector-icons/MaterialCommunityIcons";
-import { Rating, AirbnbRating } from "react-native-ratings";
 import * as Location from "expo-location";
+import { LinearGradient } from "expo-linear-gradient";
+import AntDesign from "@expo/vector-icons/AntDesign";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import config from "../config";
+import { getCurrentLocation } from "../utils/helper";
 
-const { width, height } = Dimensions.get("window");
+const { width } = Dimensions.get("window");
 const CARD_HEIGHT = 220;
 const CARD_WIDTH = width * 0.8;
 
 export default function Maps({ navigation, route }) {
+  const mapRef = React.useRef();
+
   const { placedata = {} } = route.params ?? {};
   var mylat = 0;
   var mylong = 0;
@@ -37,10 +37,11 @@ export default function Maps({ navigation, route }) {
   }
   const serverpoint = require("../config");
   const [location, setLocation] = useState(null);
-  const [errorMsg, setErrorMsg] = useState(null);
 
   const [lat, setlat] = useState(mylat);
   const [long, setlong] = useState(mylong);
+  const [distance, setdistance] = useState("");
+  const [time, settime] = useState("");
 
   const [alllocations, setalllocations] = useState([]);
 
@@ -49,53 +50,13 @@ export default function Maps({ navigation, route }) {
     longitude: placedata.longitude,
   };
   const GOOGLE_MAPS_APIKEY = config.mapapi;
-  //const GOOGLE_MAPS_APIKEY = "";
 
   useEffect(() => {
-    (async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== "granted") {
-        setErrorMsg("Permission to access location was denied");
-        return;
-      }
-
-      let location = await Location.getCurrentPositionAsync({});
-
-      // const response = await fetch(serverpoint + "/api/getLocations", {
-      //   method: "post",
-      //   headers: {
-      //     "content-type": "application/x-www-form-urlencoded; charset=utf-8",
-      //   },
-      //   body: `lat=${location.coords.latitude}&long=${location.coords.longitude}`,
-      // });
-      // const json = await response.json();
-
-      // setalllocations(json);
-      // console.warn(json);
-      // setLocation(location);
-      // setlat(json[0].latitude);
-      // setlong(json[0].longitude);
+    getCurrentLocation((location) => {
       setlat(location.coords.latitude);
-
       setlong(location.coords.longitude);
-    })();
+    });
   }, []);
-
-  const Mylocation = async () => {
-    let location = await Location.getCurrentPositionAsync({});
-    setLocation(location);
-    setlat(location.coords.latitude);
-
-    setlong(location.coords.longitude);
-  };
-
-  // const liveLongAndLat=React.useMemo(()=>{
-  //   let location = await Location.getCurrentPositionAsync({});
-  //   return {
-  //     latitude:location.coords.latitude,
-  //     longitude:location.coords.longitude
-  //   }
-  // },[])
 
   const origin = React.useMemo(() => {
     return {
@@ -112,21 +73,18 @@ export default function Maps({ navigation, route }) {
     setlong(location.coords.longitude);
   };
 
-  console.log(origin);
+  console.log("origin", origin);
 
   React.useEffect(() => {
     const interval = setInterval(() => {
-      getMylocation();
+      getCurrentLocation((location) => {
+        setlat(location.coords.latitude);
+        setlong(location.coords.longitude);
+      });
     }, 6000);
     return () => clearInterval(interval);
   });
 
-  let text = "Waiting..";
-  if (errorMsg) {
-    text = errorMsg;
-  } else if (location) {
-    text = JSON.stringify(location);
-  }
   const getMapRegion = () => ({
     latitude: lat,
     longitude: long,
@@ -139,10 +97,23 @@ export default function Maps({ navigation, route }) {
         provider={PROVIDER_GOOGLE} // remove if not using Google Maps
         style={styles.map}
         region={getMapRegion()}
-        showsUserLocation={true}
+        ref={mapRef}
       >
-        <Marker coordinate={origin ?? {}} />
-        <Marker coordinate={destination ?? {}} />
+        <Marker
+          coordinate={origin}
+          image={require("../assets/images/Oval.png")}
+          pinColor="green"
+          title="Test Title"
+          description="This is the test description"
+        ></Marker>
+
+        <Marker
+          coordinate={destination}
+          image={require("../assets/images/greenMarker.png")}
+          pinColor="green"
+          title="Test Title"
+          description="This is the test description"
+        ></Marker>
         <MapViewDirections
           origin={origin ?? {}}
           destination={destination ?? {}}
@@ -151,6 +122,20 @@ export default function Maps({ navigation, route }) {
           strokeWidth={5}
           strokeColor="blue"
           lineDashPattern={[0]}
+          lineJoin="round"
+          onReady={(result) => {
+            setdistance(result.distance);
+            settime(result.duration);
+
+            mapRef.current.fitToCoordinates(result.coordinates, {
+              edgePadding: {
+                right: 30,
+                bottom: 300,
+                left: 30,
+                top: 100,
+              },
+            });
+          }}
         />
       </MapView>
       <TouchableOpacity style={styles.viewCurrent} onPress={() => Mylocation()}>
@@ -166,6 +151,48 @@ export default function Maps({ navigation, route }) {
         />
         <Icon name="ios-search" size={20} />
       </View>
+      <LinearGradient
+        // Button Linear Gradient
+        colors={["#2193b0", "#6dd5ed"]}
+        style={styles.viewMapbar}
+      >
+        <View style={styles.viewBarheader}>
+          <Text style={styles.textBarheader}>Origin</Text>
+          <AntDesign
+            style={styles.iconBarheader}
+            name="arrowright"
+            size={24}
+            color="white"
+          />
+          <Text style={styles.textBarheader}>{placedata.title}</Text>
+        </View>
+        {/* total distance */}
+        <View style={styles.viewBarbody}>
+          <View style={styles.viewTdistance}>
+            <AntDesign name="car" size={20} color="black" />
+
+            <Text style={styles.textTdistance}>{Math.trunc(distance)} Km</Text>
+          </View>
+          {/* remainng time */}
+          <View style={styles.viewTdistance}>
+            <Ionicons name="timer" size={20} color="black" />
+
+            <Text style={styles.textTdistance}>{Math.trunc(time)} Min</Text>
+          </View>
+
+          {/* remainng distance */}
+
+          <View style={styles.viewTdistance}>
+            <MaterialCommunityIcons
+              name="map-marker-distance"
+              size={20}
+              color="black"
+            />
+
+            <Text style={styles.textTdistance}>{Math.trunc(distance)} Km</Text>
+          </View>
+        </View>
+      </LinearGradient>
     </>
   );
 }
@@ -332,5 +359,46 @@ const styles = StyleSheet.create({
     right: 20,
     bottom: 50,
     borderRadius: 20,
+  },
+  viewMapbar: {
+    position: "absolute",
+    padding: 30,
+    bottom: 10,
+    backgroundColor: "white",
+    elevation: 2,
+    marginHorizontal: 20,
+
+    borderRadius: 10,
+    height: "20%",
+    width: "90%",
+  },
+  viewBarheader: {
+    flexDirection: "row",
+    marginVertical: 10,
+    justifyContent: "center",
+  },
+  textBarheader: {
+    fontSize: 20,
+    color: "white",
+    fontWeight: "bold",
+  },
+  iconBarheader: {
+    marginHorizontal: 10,
+    marginTop: 3,
+  },
+  viewBarbody: {
+    marginVertical: 10,
+    marginHorizontal: 10,
+    flexDirection: "row",
+  },
+  viewTdistance: {
+    flexDirection: "row",
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 8,
+    marginEnd: 6,
+  },
+  textTdistance: {
+    marginHorizontal: 3,
   },
 });

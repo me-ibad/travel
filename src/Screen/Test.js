@@ -14,7 +14,6 @@ import {
 } from "react-native";
 import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
-import * as Location from "expo-location";
 import { Fontisto, Ionicons, FontAwesome5 } from "@expo/vector-icons";
 import { Rating, AirbnbRating } from "react-native-ratings";
 import { mapDarkStyle, mapStandardStyle } from "../Component/mapData";
@@ -22,6 +21,7 @@ import { mapDarkStyle, mapStandardStyle } from "../Component/mapData";
 import { useTheme } from "@react-navigation/native";
 import { getToken } from "../globalFunction/getToken";
 import axios from "axios";
+import { getCurrentLocation } from "../utils/helper";
 
 const { width, height } = Dimensions.get("window");
 const CARD_HEIGHT = 220;
@@ -40,33 +40,22 @@ export default function Test({ navigation, route }) {
   ];
 
   async function recomendedpoints() {
-    let location = await Location.getCurrentPositionAsync({});
     var obje = await getToken("travelapp");
     const userData = JSON.parse(obje);
 
-    axios
-      .post(serverpoint.servername + "/getLocations", {
+    getCurrentLocation(async (location) => {
+      let res = await axios.post(serverpoint.servername + "/getLocations", {
         lat: location.coords.latitude,
         long: location.coords.longitude,
         interests: userData.userInterests.map((value) => value.name),
-      })
-      .then((res) => {
-        // alert(res.data)
-        ////   console.log(res.data);
-        ////alert(res.data);
-        console.log(res.data);
-        setalllocations(res.data);
       });
 
-    /// setlat(location.coords.latitude)
-
-    //setlong(location.coords.longitude)
+      setalllocations(res.data);
+    });
   }
 
   useEffect(() => {
     recomendedpoints();
-
-    // var myModule = require('../../config');
   }, []);
 
   for (var i = 0; i < alllocations.length; i++) {

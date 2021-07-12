@@ -8,76 +8,59 @@ import {
   ScrollView,
   TextInput,
   ImageBackground,
-  KeyboardAvoidingView,
-  Dimensions,
   StatusBar,
 } from "react-native";
 import { AsyncStorage } from "react-native";
-import * as Location from "expo-location";
 import colors from "../assets/colors/colors";
 import Feather from "react-native-vector-icons/Feather";
 import Entypo from "@expo/vector-icons/Entypo";
-import activitiesData from "../assets/data/activitiesData";
-import discoverCategoriesData from "../assets/data/discoverCategoriesData";
-import learnMoreData from "../assets/data/learnMoreData";
-import discoverData from "../assets/data/discoverData";
 import { SafeAreaView } from "react-native-safe-area-context";
-import profile from "../assets/images/person.png";
 import { FlatList, TouchableOpacity } from "react-native-gesture-handler";
-import { LinearGradient } from "expo-linear-gradient";
 import axios from "axios";
 import Icon from "@expo/vector-icons/MaterialIcons";
 import { getToken } from "../globalFunction/getToken";
 import { removetoken } from "../globalFunction/getToken";
+import { getCurrentLocation } from "../utils/helper";
 Feather.loadFont();
 Entypo.loadFont();
 
 export function Home({ navigation }) {
   const [fname, setfname] = useState("");
-
   const [nearByLocation, setNearByLocation] = useState([]);
-
   const [discoverLocation, setDiscoverLocation] = useState([]);
-
   const serverpoint = require("../config");
 
   async function getlocationbymodel() {
     var obje = await getToken("travelapp");
     const userData = JSON.parse(obje);
 
-    let location = await Location.getCurrentPositionAsync({});
-
-    axios
-      .post(serverpoint.servername + "/getLocations", {
+    getCurrentLocation(async (location) => {
+      let res = await axios.post(serverpoint.servername + "/getLocations", {
         lat: location.coords.latitude,
         long: location.coords.longitude,
         interests: userData.userInterests.map((value) => value.name),
-      })
-      .then((res) => {
-        // alert(res.data)
-        ////  console.log(res.data);
-        ////alert(res.data);
-        setNearByLocation(res.data);
       });
+
+      setNearByLocation(res.data);
+    });
   }
 
   async function getDiscoverLocation() {
     var obje = await getToken("travelapp");
     const userData = JSON.parse(obje);
-    let location = await Location.getCurrentPositionAsync({});
 
-    axios
-      .post(serverpoint.servername + "/getDiscoverLocation", {
-        lat: location.coords.latitude,
-        long: location.coords.longitude,
-        interests: userData.userInterests.map((value) => value.name),
-      })
-      .then((res) => {
-        // alert(res.data)
-        ////   console.log(res.data);
-        ////alert(res.data);
-        setDiscoverLocation(res.data);
-      });
+    getCurrentLocation(async (location) => {
+      let res = await axios.post(
+        serverpoint.servername + "/getDiscoverLocation",
+        {
+          lat: location.coords.latitude,
+          long: location.coords.longitude,
+          interests: userData.userInterests.map((value) => value.name),
+        }
+      );
+
+      setDiscoverLocation(res.data);
+    });
   }
   const gettoken = async (key) => {
     try {
@@ -156,22 +139,6 @@ export function Home({ navigation }) {
           </View>
         </ImageBackground>
       </TouchableOpacity>
-    );
-  };
-
-  const renderActivityItem = ({ item }) => {
-    return (
-      <View
-        style={[
-          styles.activityItemWrapper,
-          {
-            marginLeft: item.id === "activities-1" ? 20 : 0,
-          },
-        ]}
-      >
-        <Image source={item.image} style={styles.activityItemImage} />
-        <Text style={styles.activityItemText}>{item.title}</Text>
-      </View>
     );
   };
 
@@ -264,43 +231,6 @@ export function Home({ navigation }) {
                 }}
               />
             </View>
-
-            {/* <View style={{
-                   backgroundColor:"#FFF",
-                   paddingVertical:8,
-                   paddingHorizontal:20,
-                   marginHorizontal:20,
-                   borderRadius:15,
-                   marginTop:10,
-                 
-               }}>
-                   <TextInput
-                        placeholder="Search"
-                        placeholderTextColor="#b1e5d3"
-                        style={{
-                            fontWeight:"bold",
-                            fontSize:18,
-                            width:260
-                        }}
-                   />
-                    <Image
-                    // source={require('../images/3.png')}
-                    style={{height:20,width:20}}
-                   /> 
-               </View> 
-          
-          
-          {/* <View style={styles.menuWrapper}>
-            <Feather
-              name="menu"
-              size={32}
-              color={colors.black}
-              style={styles.menuIcon}
-            />
-            <Image source={profile} style={styles.profileImage} />
-          </View>
-          
-          */}
           </SafeAreaView>
 
           {/* Discover */}
@@ -318,16 +248,7 @@ export function Home({ navigation }) {
                 />
               </TouchableOpacity>
             </View>
-            <View style={styles.discoverCategoriesWrapper}>
-              {/* <Text
-                style={[styles.discoverCategoryText, { color: colors.orange }]}
-              >
-                All
-              </Text>
-              <Text style={styles.discoverCategoryText}>Destinations</Text>
-              <Text style={styles.discoverCategoryText}>Cities</Text>
-              <Text style={styles.discoverCategoryText}>Experiences</Text> */}
-            </View>
+
             <View style={styles.discoverItemsWrapper}>
               <FlatList
                 data={discoverLocation}
