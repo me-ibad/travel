@@ -52,7 +52,7 @@ export default function Maps({ navigation, route }) {
   const GOOGLE_MAPS_APIKEY = config.mapapi;
 
   useEffect(() => {
-    getCurrentLocation((location) => {
+    getCurrentLocation(location => {
       setlat(location.coords.latitude);
       setlong(location.coords.longitude);
     });
@@ -77,7 +77,7 @@ export default function Maps({ navigation, route }) {
 
   React.useEffect(() => {
     const interval = setInterval(() => {
-      getCurrentLocation((location) => {
+      getCurrentLocation(location => {
         setlat(location.coords.latitude);
         setlong(location.coords.longitude);
       });
@@ -123,7 +123,7 @@ export default function Maps({ navigation, route }) {
           strokeColor="blue"
           lineDashPattern={[0]}
           lineJoin="round"
-          onReady={(result) => {
+          onReady={result => {
             setdistance(result.distance);
             settime(result.duration);
 
@@ -202,7 +202,7 @@ const styles = StyleSheet.create({
   },
   searchBox: {
     position: "absolute",
-    marginTop: Platform.OS === "ios" ? 40 : 20,
+    marginTop: Platform.OS === "ios" ? 40 : 40,
     flexDirection: "row",
     backgroundColor: "#fff",
     width: "90%",
@@ -357,7 +357,7 @@ const styles = StyleSheet.create({
     height: 40,
     position: "absolute",
     right: 20,
-    bottom: 50,
+    bottom: 200,
     borderRadius: 20,
   },
   viewMapbar: {
@@ -366,7 +366,7 @@ const styles = StyleSheet.create({
     bottom: 10,
     backgroundColor: "white",
     elevation: 2,
-    marginHorizontal: 20,
+    marginHorizontal: 10,
 
     borderRadius: 10,
     height: "20%",
@@ -379,6 +379,8 @@ const styles = StyleSheet.create({
   },
   textBarheader: {
     fontSize: 20,
+    // flex: 1,
+    // width:"100%",
     color: "white",
     fontWeight: "bold",
   },
@@ -388,7 +390,7 @@ const styles = StyleSheet.create({
   },
   viewBarbody: {
     marginVertical: 10,
-    marginHorizontal: 10,
+    // marginHorizontal: 5,
     flexDirection: "row",
   },
   viewTdistance: {

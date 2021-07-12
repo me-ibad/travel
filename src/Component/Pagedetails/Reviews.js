@@ -14,7 +14,7 @@ import {
 const w = Dimensions.get("window").width;
 const h = Dimensions.get("window").height;
 
-import COLORS from "../../assets/colors/colors";
+import colors from "../../assets/colors/colors";
 import { FontAwesome } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 
@@ -104,13 +104,9 @@ export default function Reviews(props) {
         />
         <Text>{avvgRating}</Text>
       </View>
-      <View style={{}}>
+      <View style={styles.viewReview}>
         <TextInput
-          style={{
-            borderBottomColor: "#ddd",
-            borderBottomWidth: 1,
-            paddingBottom: 20,
-          }}
+          style={styles.inputReview}
           placeholder="comment"
           onChangeText={setpostComment}
         />
@@ -119,9 +115,7 @@ export default function Reviews(props) {
           style={styles.textinput}
           onPress={() => passComment()}
         >
-          <Text style={{ textAlign: "center", color: "#FFF", fontSize: 16 }}>
-            Post
-          </Text>
+          <Text style={styles.textReview}>Post</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -131,15 +125,14 @@ export default function Reviews(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "white",
-    // maxHeight: h,
+    backgroundColor: colors.white,
 
     width: w,
   },
 
   mainview: {
     flex: 1,
-    backgroundColor: "#FFF",
+    backgroundColor: colors.white,
     padding: 20,
   },
   rating: {
@@ -198,4 +191,14 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: "grey",
   },
+  viewReview: {
+    marginVertical: 10,
+    marginHorizontal: 20,
+  },
+  inputReview: {
+    borderBottomColor: "#ddd",
+    borderBottomWidth: 1,
+    paddingBottom: 20,
+  },
+  textReview: { textAlign: "center", color: colors.white, fontSize: 16 },
 });

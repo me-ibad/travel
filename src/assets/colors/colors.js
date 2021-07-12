@@ -4,11 +4,12 @@ const colors = {
   orange: "#F35D38",
   black: "#0C0D0E",
   white: "#FBFCFE",
+
   yellow: "#FDCC0D",
   dark: "#000",
-  primary: "#04555c",
-  secondary: "#e1e8e9",
-  light: "#f9f9f9",
+  primary: "#0d47a1",
+  secondary: "#4CCDFB",
+  light: "#e1e8e9",
   grey: "#dddedd",
   red: "red",
 };

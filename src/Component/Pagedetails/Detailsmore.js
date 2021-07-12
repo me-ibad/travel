@@ -70,7 +70,7 @@ export default function Detailsmore(props) {
   const getMapRegion = () => ({
     latitude: mylat,
     longitude: mylong,
-    latitudeDelta: 0.0922,
+    latitudeDelta: 0.04,
     longitudeDelta: 0.0421,
   });
 
@@ -94,21 +94,6 @@ export default function Detailsmore(props) {
       });
   }
 
-  // <View style={styles.mapview}>
-  //       <MapView
-  //         provider={PROVIDER_GOOGLE} // remove if not using Google Maps
-  //         style={styles.map}
-  //         initialRegion={getMapRegion()}
-  //       >
-  //         {/* <Marker
-  //           coordinate={getMapRegion()}
-  //           title="Test Title"
-  //           description="This is the test description"
-  //         >
-  //           <Callout tooltip></Callout>
-  //         </Marker> */}
-  //       </MapView>
-  //     </View>
   useEffect(() => {
     ///  checkReviews();
     saveToDb();
@@ -117,19 +102,12 @@ export default function Detailsmore(props) {
   return (
     <View style={styles.mainview}>
       <View style={styles.detailview}>
-        {/* <Icon name="phone" size={28} color={COLORS.primary} /> */}
-        {/* <TouchableOpacity onPress={() => Linking.openURL(`tel:${phoneNumber}`)}> */}
         {category != "" ? (
           <Text style={styles.detailtext}>{category}</Text>
         ) : null}
-
-        {/* </TouchableOpacity> */}
       </View>
       <View style={styles.detailview}>
-        {/* <MaterialCommunityIcons name="web" size={28} color={COLORS.primary} /> */}
         <TouchableOpacity onPress={handlePressurl}>
-          {/* <Text style={styles.detailtext}>www.encodersoft.co</Text> */}
-
           {GoogleRating != "" ? (
             <Text style={styles.detailtext}>{GoogleRating}</Text>
           ) : null}
@@ -146,6 +124,22 @@ export default function Detailsmore(props) {
             <Text style={styles.detailtext}>{placeType}</Text>
           ) : null}
         </TouchableOpacity>
+      </View>
+
+      <View style={styles.mapview}>
+        <MapView
+          provider={PROVIDER_GOOGLE} // remove if not using Google Maps
+          style={styles.map}
+          initialRegion={getMapRegion()}
+        >
+          {/* <Marker
+            coordinate={getMapRegion()}
+            title="Test Title"
+            description="This is the test description"
+          >
+            <Callout tooltip></Callout>
+          </Marker> */}
+        </MapView>
       </View>
     </View>
   );
@@ -171,6 +165,8 @@ const styles = StyleSheet.create({
     marginBottom: 200,
   },
   map: {
-    height: "100%",
+    // height: "100%",
+    minHeight: "60%",
+    maxHeight: "70%",
   },
 });

@@ -17,7 +17,7 @@ const h = Dimensions.get("window").height;
 import { getToken } from "../globalFunction/getToken";
 import * as ImagePicker from "expo-image-picker";
 import Navbar from "../Component/Navbar/Navbar";
-import ImgToBase64 from "react-native-image-base64";
+
 import { storetoken } from "../utils/helper";
 export default function Settings() {
   const serverpoint = require("../config");

@@ -34,11 +34,11 @@ export function Home({ navigation }) {
     var obje = await getToken("travelapp");
     const userData = JSON.parse(obje);
 
-    getCurrentLocation(async (location) => {
+    getCurrentLocation(async location => {
       let res = await axios.post(serverpoint.servername + "/getLocations", {
         lat: location.coords.latitude,
         long: location.coords.longitude,
-        interests: userData.userInterests.map((value) => value.name),
+        interests: userData.userInterests.map(value => value.name),
       });
 
       setNearByLocation(res.data);
@@ -49,20 +49,20 @@ export function Home({ navigation }) {
     var obje = await getToken("travelapp");
     const userData = JSON.parse(obje);
 
-    getCurrentLocation(async (location) => {
+    getCurrentLocation(async location => {
       let res = await axios.post(
         serverpoint.servername + "/getDiscoverLocation",
         {
           lat: location.coords.latitude,
           long: location.coords.longitude,
-          interests: userData.userInterests.map((value) => value.name),
+          interests: userData.userInterests.map(value => value.name),
         }
       );
 
       setDiscoverLocation(res.data);
     });
   }
-  const gettoken = async (key) => {
+  const gettoken = async key => {
     try {
       const retrievedItem = await AsyncStorage.getItem(key);
       const item = JSON.parse(retrievedItem);
@@ -132,10 +132,12 @@ export function Home({ navigation }) {
           ]}
           imageStyle={styles.discoverItemImage}
         >
-          <Text style={styles.discoverItemTitle}>{item.title}</Text>
-          <View style={styles.discoverItemLocationWrapper}>
-            <Entypo name="location-pin" size={18} color={colors.white} />
-            <Text style={styles.discoverItemLocationText}>{item.title}</Text>
+          <View style={styles.viewCardfooter}>
+            {/* <Text style={styles.discoverItemTitle}>{item.title}</Text> */}
+            <View style={styles.discoverItemLocationWrapper}>
+              <Entypo name="location-pin" size={18} color={colors.white} />
+              <Text style={styles.discoverItemLocationText}>{item.title}</Text>
+            </View>
           </View>
         </ImageBackground>
       </TouchableOpacity>
@@ -166,17 +168,9 @@ export function Home({ navigation }) {
   return (
     <>
       <View style={styles.container}>
-        <StatusBar barStyle="dark-content" backgroundColor="#4CCDFB" />
+        <StatusBar barStyle="dark-content" backgroundColor={colors.secondary} />
         <ScrollView>
-          <View
-            style={{
-              backgroundColor: "#4CCDFB",
-              height: 150,
-              borderBottomLeftRadius: 20,
-              borderBottomRightRadius: 20,
-              paddingHorizontal: 20,
-            }}
-          >
+          <View style={styles.viewHeader}>
             <TouchableOpacity onPress={() => logOut()}>
               <Feather
                 name="log-out"
@@ -188,31 +182,16 @@ export function Home({ navigation }) {
               />
             </TouchableOpacity>
 
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-
-                width: "100%",
-              }}
-            >
+            <View style={styles.viewHeadername}>
               <View style={{ width: "50%" }}>
-                <Text
-                  style={{
-                    fontSize: 28,
-                    color: "#FFF",
-                    fontWeight: "bold",
-                  }}
-                >
-                  Hi {fname}
-                </Text>
+                <Text style={styles.textHeadername}>Hi {fname}</Text>
               </View>
               <View style={{ width: "50%", alignItems: "flex-end" }}>
                 <Image
                   source={{
                     uri: "https://image.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg",
                   }}
-                  style={{ height: 60, width: 60, borderRadius: 60 }}
+                  style={styles.imgHeadername}
                 />
               </View>
             </View>
@@ -222,13 +201,9 @@ export function Home({ navigation }) {
             <View style={styles.inputContainer}>
               <Icon name="search" size={28} />
               <TextInput
+                style={styles.inputSearch}
                 placeholder="Search place"
                 onFocus={() => navigation.navigate("Search")}
-                style={{
-                  fontWeight: "bold",
-                  fontSize: 18,
-                  width: 260,
-                }}
               />
             </View>
           </SafeAreaView>
@@ -253,7 +228,7 @@ export function Home({ navigation }) {
               <FlatList
                 data={discoverLocation}
                 renderItem={renderDiscoverItem}
-                keyExtractor={(item) => item._id}
+                keyExtractor={item => item._id}
                 horizontal
                 showsHorizontalScrollIndicator={false}
               />
@@ -274,7 +249,7 @@ export function Home({ navigation }) {
               <FlatList
                 data={nearByLocation}
                 renderItem={renderLearnMoreItem}
-                keyExtractor={(item) => item._id}
+                keyExtractor={item => item._id}
                 horizontal
                 showsHorizontalScrollIndicator={false}
               />
@@ -291,6 +266,22 @@ const styles = StyleSheet.create({
     flex: 1,
     color: colors.white,
   },
+  viewHeader: {
+    backgroundColor: colors.secondary,
+    height: 150,
+    borderBottomLeftRadius: 20,
+    borderBottomRightRadius: 20,
+    paddingHorizontal: 20,
+  },
+
+  viewHeadername: {
+    flexDirection: "row",
+    alignItems: "center",
+    width: "100%",
+  },
+  textHeadername: { fontSize: 28, color: colors.white, fontWeight: "bold" },
+  imgHeadername: { height: 60, width: 60, borderRadius: 60 },
+  input: { fontWeight: "bold", fontSize: 18, width: 260 },
   menuWrapper: {
     marginHorizontal: 20,
     marginTop: 20,
@@ -328,6 +319,11 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
     marginLeft: 20,
   },
+  viewCardfooter: {
+    backgroundColor: "rgba(52, 52, 52, 0.7)",
+    padding: 5,
+    borderRadius: 10,
+  },
   discoverItem: {
     width: 170,
     height: 250,
@@ -342,6 +338,7 @@ const styles = StyleSheet.create({
   },
   discoverItemTitle: {
     fontSize: 18,
+    fontWeight: "bold",
     color: colors.white,
   },
   discoverItemLocationWrapper: {
@@ -351,8 +348,8 @@ const styles = StyleSheet.create({
   },
   discoverItemLocationText: {
     marginLeft: 5,
-
-    fontSize: 14,
+    fontWeight: "bold",
+    fontSize: 16,
     color: colors.white,
   },
   activitiesWrapper: {
@@ -404,7 +401,11 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   learnMoreItemText: {
-    fontSize: 18,
+    fontSize: 14,
+    fontWeight: "bold",
+    backgroundColor: "rgba(52, 52, 52, 0.7)",
+    padding: 5,
+    borderRadius: 10,
     color: colors.white,
     marginHorizontal: 10,
     marginVertical: 20,
@@ -445,7 +446,7 @@ const styles = StyleSheet.create({
   iconContainer: {
     height: 60,
     width: 60,
-    backgroundColor: colors.secondary,
+    backgroundColor: colors.light,
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 10,
