@@ -86,7 +86,7 @@ export default function Reviews(props) {
 
             <View style={styles.viewName}>
               <Text style={styles.textName}>{s.users.fname}</Text>
-              <Text style={styles.textReview}>{s.comment}</Text>
+              <Text style={{ color: "grey" }}>{s.comment}</Text>
             </View>
           </View>
         </>

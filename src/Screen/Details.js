@@ -31,6 +31,9 @@ const Tab = createMaterialTopTabNavigator();
 
 export default function Details({ navigation, route }) {
   const { placedata } = route.params;
+
+  const [isLiked, setisLiked] = React.useState(false);
+
   const [avvgRating, setavvgRating] = React.useState("");
   const scrollA = useRef(new Animated.Value(0)).current;
 
@@ -43,7 +46,7 @@ export default function Details({ navigation, route }) {
         latitude: placedata.latitude,
         longitude: placedata.longitude,
       })
-      .then((res) => {
+      .then(res => {
         console.log("response", res.data);
         // alert(res.data)
         setavvgRating(res.data[0]?.averagerating);
@@ -60,6 +63,7 @@ export default function Details({ navigation, route }) {
       latitude: placedata.latitude,
       longitude: placedata.longitude,
     });
+    setisLiked(true);
   }
   async function switchToMap() {
     var userdata = await getToken("travelapp");
@@ -111,8 +115,15 @@ export default function Details({ navigation, route }) {
         <View style={style.detailsContainer}>
           <View style={style.iconContainer}>
             <TouchableOpacity onPress={() => likeIt(navigation, placedata)}>
-              {/* <FontAwesome5 name="gratipay" color={COLORS.dark} size={30} /> */}
-              <FontAwesome5 name="gratipay" color="red" size={30} />
+              {isLiked == true ? (
+                <>
+                  <FontAwesome5 name="gratipay" color="red" size={30} />
+                </>
+              ) : (
+                <>
+                  <FontAwesome5 name="gratipay" color={COLORS.dark} size={30} />
+                </>
+              )}
             </TouchableOpacity>
           </View>
 
@@ -133,7 +144,7 @@ export default function Details({ navigation, route }) {
           <Tab.Screen name="Details" component={DetailsmoreComp} />
           <Tab.Screen name="Reviews" component={ReviewsComp} />
           <Tab.Screen name="Pictures">
-            {(props) => <Placepics {...props} placedata={placedata} />}
+            {props => <Placepics {...props} placedata={placedata} />}
           </Tab.Screen>
         </Tab.Navigator>
       </Animated.ScrollView>
@@ -248,7 +259,7 @@ const style = StyleSheet.create({
     fontSize: 20,
   },
 
-  banner: (scrollA) => ({
+  banner: scrollA => ({
     height: BANNER_H,
     // flex: 0.5,
     width: "100%",

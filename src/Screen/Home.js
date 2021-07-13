@@ -8,6 +8,7 @@ import {
   ScrollView,
   TextInput,
   ImageBackground,
+  ActivityIndicator,
   StatusBar,
 } from "react-native";
 import { AsyncStorage } from "react-native";
@@ -26,6 +27,10 @@ Entypo.loadFont();
 
 export function Home({ navigation }) {
   const [fname, setfname] = useState("");
+  const [userPic, setuserPic] = useState(
+    "https://image.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg"
+  );
+
   const [nearByLocation, setNearByLocation] = useState([]);
   const [discoverLocation, setDiscoverLocation] = useState([]);
   const serverpoint = require("../config");
@@ -91,6 +96,8 @@ export function Home({ navigation }) {
   const fetchuserdata = async () => {
     var obje = await gettoken("travelapp");
     setfname(JSON.parse(obje).fname);
+
+    setuserPic(JSON.parse(obje).img);
   };
 
   React.useEffect(() => {
@@ -189,7 +196,7 @@ export function Home({ navigation }) {
               <View style={{ width: "50%", alignItems: "flex-end" }}>
                 <Image
                   source={{
-                    uri: "https://image.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg",
+                    uri: userPic,
                   }}
                   style={styles.imgHeadername}
                 />
@@ -224,15 +231,23 @@ export function Home({ navigation }) {
               </TouchableOpacity>
             </View>
 
-            <View style={styles.discoverItemsWrapper}>
-              <FlatList
-                data={discoverLocation}
-                renderItem={renderDiscoverItem}
-                keyExtractor={item => item._id}
-                horizontal
-                showsHorizontalScrollIndicator={false}
-              />
-            </View>
+            {discoverLocation != "" ? (
+              <>
+                <View style={styles.discoverItemsWrapper}>
+                  <FlatList
+                    data={discoverLocation}
+                    renderItem={renderDiscoverItem}
+                    keyExtractor={item => item._id}
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                  />
+                </View>
+              </>
+            ) : (
+              <>
+                <ActivityIndicator size="large" color={colors.secondary} />
+              </>
+            )}
           </View>
 
           {/* Activities */}
@@ -243,18 +258,26 @@ export function Home({ navigation }) {
           </View>
 
           {/* Learn More */}
-          <View style={styles.learnMoreWrapper}>
-            <Text style={styles.learnMoreTitle}>Near by</Text>
-            <View style={styles.learnMoreItemsWrapper}>
-              <FlatList
-                data={nearByLocation}
-                renderItem={renderLearnMoreItem}
-                keyExtractor={item => item._id}
-                horizontal
-                showsHorizontalScrollIndicator={false}
-              />
-            </View>
-          </View>
+          {nearByLocation != "" ? (
+            <>
+              <View style={styles.learnMoreWrapper}>
+                <Text style={styles.learnMoreTitle}>Near by</Text>
+                <View style={styles.learnMoreItemsWrapper}>
+                  <FlatList
+                    data={nearByLocation}
+                    renderItem={renderLearnMoreItem}
+                    keyExtractor={item => item._id}
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                  />
+                </View>
+              </View>
+            </>
+          ) : (
+            <>
+              <ActivityIndicator size="large" color={colors.secondary} />
+            </>
+          )}
         </ScrollView>
       </View>
     </>
