@@ -43,7 +43,7 @@ export default function Details({ navigation, route }) {
         latitude: placedata.latitude,
         longitude: placedata.longitude,
       })
-      .then(res => {
+      .then((res) => {
         console.log("response", res.data);
         // alert(res.data)
         setavvgRating(res.data[0]?.averagerating);
@@ -132,7 +132,9 @@ export default function Details({ navigation, route }) {
         <Tab.Navigator>
           <Tab.Screen name="Details" component={DetailsmoreComp} />
           <Tab.Screen name="Reviews" component={ReviewsComp} />
-          <Tab.Screen name="Pictures" component={Placepics} />
+          <Tab.Screen name="Pictures">
+            {(props) => <Placepics {...props} placedata={placedata} />}
+          </Tab.Screen>
         </Tab.Navigator>
       </Animated.ScrollView>
     </SafeAreaView>
@@ -246,7 +248,7 @@ const style = StyleSheet.create({
     fontSize: 20,
   },
 
-  banner: scrollA => ({
+  banner: (scrollA) => ({
     height: BANNER_H,
     // flex: 0.5,
     width: "100%",

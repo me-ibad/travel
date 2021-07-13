@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from "react";
 import MapViewDirections from "react-native-maps-directions";
-import MapView, { PROVIDER_GOOGLE, Marker, Callout } from "react-native-maps";
+import MapView, {
+  PROVIDER_GOOGLE,
+  Marker,
+  Callout,
+  AnimatedRegion,
+} from "react-native-maps";
 import {
   Platform,
   StyleSheet,
@@ -19,13 +24,18 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import config from "../config";
 import { getCurrentLocation } from "../utils/helper";
+import Animated from "react-native-reanimated";
 
-const { width } = Dimensions.get("window");
+const screen = Dimensions.get("window");
+const ASPECT_RATIO = screen.width / screen.height;
+const LATITUDE_DELTA = 0.04;
+const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 const CARD_HEIGHT = 220;
-const CARD_WIDTH = width * 0.8;
+const CARD_WIDTH = screen.width * 0.8;
 
 export default function Maps({ navigation, route }) {
   const mapRef = React.useRef();
+  const markerRef = React.useRef();
 
   const { placedata = {} } = route.params ?? {};
   var mylat = 0;
@@ -37,6 +47,15 @@ export default function Maps({ navigation, route }) {
   }
   const serverpoint = require("../config");
   const [location, setLocation] = useState(null);
+
+  const [coordinate, setCoordinate] = React.useState(
+    new AnimatedRegion({
+      latitude: mylat,
+      longitude: mylong,
+      latitudeDelta: LATITUDE_DELTA,
+      longitudeDelta: LONGITUDE_DELTA,
+    })
+  );
 
   const [lat, setlat] = useState(mylat);
   const [long, setlong] = useState(mylong);
@@ -52,11 +71,31 @@ export default function Maps({ navigation, route }) {
   const GOOGLE_MAPS_APIKEY = config.mapapi;
 
   useEffect(() => {
-    getCurrentLocation(location => {
+    getCurrentLocation((location) => {
+      animate(location.coords.latitude, location.coords.longitude);
       setlat(location.coords.latitude);
       setlong(location.coords.longitude);
+      setCoordinate(
+        new AnimatedRegion({
+          latitude: location.coords.latitude,
+          longitude: location.coords.longitude,
+          latitudeDelta: LATITUDE_DELTA,
+          longitudeDelta: LONGITUDE_DELTA,
+        })
+      );
     });
   }, []);
+
+  const animate = (latitude, longitude) => {
+    const newCoordinate = { latitude, longitude };
+    if (Platform.OS == "android") {
+      if (markerRef.current) {
+        markerRef.current.animateMarkerToCoordinate(newCoordinate, 7000);
+      }
+    } else {
+      coordinate.timing(newCoordinate).start();
+    }
+  };
 
   const origin = React.useMemo(() => {
     return {
@@ -77,13 +116,33 @@ export default function Maps({ navigation, route }) {
 
   React.useEffect(() => {
     const interval = setInterval(() => {
-      getCurrentLocation(location => {
+      getCurrentLocation((location) => {
+        animate(location.coords.latitude, location.coords.longitude);
         setlat(location.coords.latitude);
         setlong(location.coords.longitude);
+        setCoordinate(
+          new AnimatedRegion({
+            latitude: location.coords.latitude,
+            longitude: location.coords.longitude,
+            latitudeDelta: LATITUDE_DELTA,
+            longitudeDelta: LONGITUDE_DELTA,
+          })
+        );
       });
     }, 6000);
     return () => clearInterval(interval);
   });
+
+  const onCenterToMap = () => {
+    mapRef.current.animateToRegion({
+      latitude: origin.latitude,
+      longitude: origin.longitude,
+      latitudeDelta: LATITUDE_DELTA,
+      longitudeDelta: LONGITUDE_DELTA,
+    });
+  };
+
+  console.log("coordinate", coordinate);
 
   const getMapRegion = () => ({
     latitude: lat,
@@ -99,13 +158,14 @@ export default function Maps({ navigation, route }) {
         region={getMapRegion()}
         ref={mapRef}
       >
-        <Marker
-          coordinate={origin}
+        <Marker.Animated
+          coordinate={coordinate}
           image={require("../assets/images/Oval.png")}
           pinColor="green"
           title="Test Title"
           description="This is the test description"
-        ></Marker>
+          ref={markerRef}
+        ></Marker.Animated>
 
         <Marker
           coordinate={destination}
@@ -123,22 +183,22 @@ export default function Maps({ navigation, route }) {
           strokeColor="blue"
           lineDashPattern={[0]}
           lineJoin="round"
-          onReady={result => {
+          onReady={(result) => {
             setdistance(result.distance);
             settime(result.duration);
 
             mapRef.current.fitToCoordinates(result.coordinates, {
               edgePadding: {
-                right: 30,
-                bottom: 300,
-                left: 30,
-                top: 100,
+                // right: 30,
+                // bottom: 300,
+                // left: 30,
+                // top: 100,
               },
             });
           }}
         />
       </MapView>
-      <TouchableOpacity style={styles.viewCurrent} onPress={() => Mylocation()}>
+      <TouchableOpacity style={styles.viewCurrent} onPress={onCenterToMap}>
         <FontAwesome name="location-arrow" size={24} color="black" />
       </TouchableOpacity>
       <View style={styles.searchBox}>
