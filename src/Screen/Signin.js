@@ -63,7 +63,7 @@ export default function Signin({ navigation }) {
             fid: finalresponse.id,
             name: finalresponse.name,
           })
-          .then((res) => {
+          .then(res => {
             // alert(res.data)
             // console.log(res.data)
             storetoken("travelapp", res.data);
@@ -101,7 +101,7 @@ export default function Signin({ navigation }) {
           gid: user.id,
           img: user.photoUrl,
         })
-        .then((res) => {
+        .then(res => {
           storetoken("travelapp", res.data);
           console.log("res.data in google sign in", res.data);
 
@@ -137,7 +137,7 @@ export default function Signin({ navigation }) {
           email: username,
           pass: pass,
         })
-        .then((res) => {
+        .then(res => {
           if (res.data != "fail") {
             storetoken("travelapp", res.data[0]);
             console.log(res.data[0]);
@@ -191,9 +191,6 @@ export default function Signin({ navigation }) {
           <Text style={styles.textsign}>Sign In</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => navigation.navigate("Home")}>
-          <Text style={{ marginTop: 20 }}>skip</Text>
-        </TouchableOpacity>
         <View style={styles.viewscoialbtn}>
           <TouchableOpacity onPress={facebooklogIn}>
             <View style={styles.viewfacebook}>

@@ -15,6 +15,7 @@ import { AsyncStorage } from "react-native";
 import colors from "../assets/colors/colors";
 import Feather from "react-native-vector-icons/Feather";
 import Entypo from "@expo/vector-icons/Entypo";
+import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { FlatList, TouchableOpacity } from "react-native-gesture-handler";
 import axios from "axios";
@@ -107,10 +108,10 @@ export function Home({ navigation }) {
   }, []);
 
   const categoryIcons = [
-    <Icon name="flight" size={25} color={colors.primary} />,
-    <Icon name="beach-access" size={25} color={colors.primary} />,
-    <Icon name="near-me" size={25} color={colors.primary} />,
-    <Icon name="place" size={25} color={colors.primary} />,
+    <FontAwesome5 name="swimmer" size={25} color={colors.primary} />,
+    <Icon name="hotel" size={25} color={colors.primary} />,
+    <Icon name="museum" size={25} color={colors.primary} />,
+    <Icon name="store-mall-directory" size={25} color={colors.primary} />,
   ];
   const ListCategories = () => {
     return (

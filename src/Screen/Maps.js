@@ -71,7 +71,7 @@ export default function Maps({ navigation, route }) {
   const GOOGLE_MAPS_APIKEY = config.mapapi;
 
   useEffect(() => {
-    getCurrentLocation((location) => {
+    getCurrentLocation(location => {
       animate(location.coords.latitude, location.coords.longitude);
       setlat(location.coords.latitude);
       setlong(location.coords.longitude);
@@ -116,7 +116,7 @@ export default function Maps({ navigation, route }) {
 
   React.useEffect(() => {
     const interval = setInterval(() => {
-      getCurrentLocation((location) => {
+      getCurrentLocation(location => {
         animate(location.coords.latitude, location.coords.longitude);
         setlat(location.coords.latitude);
         setlong(location.coords.longitude);
@@ -183,7 +183,7 @@ export default function Maps({ navigation, route }) {
           strokeColor="blue"
           lineDashPattern={[0]}
           lineJoin="round"
-          onReady={(result) => {
+          onReady={result => {
             setdistance(result.distance);
             settime(result.duration);
 
@@ -217,14 +217,19 @@ export default function Maps({ navigation, route }) {
         style={styles.viewMapbar}
       >
         <View style={styles.viewBarheader}>
-          <Text style={styles.textBarheader}>Origin</Text>
-          <AntDesign
-            style={styles.iconBarheader}
-            name="arrowright"
-            size={24}
-            color="white"
-          />
-          <Text style={styles.textBarheader}>{placedata.title}</Text>
+          <View style={{ width: "25%" }}>
+            <Text style={styles.textBarheader}>Origin</Text>
+          </View>
+
+          <View style={{ width: "75%", flexDirection: "row" }}>
+            <AntDesign
+              style={styles.iconBarheader}
+              name="arrowright"
+              size={24}
+              color="white"
+            />
+            <Text style={styles.textBarheader}>{placedata.title}</Text>
+          </View>
         </View>
         {/* total distance */}
         <View style={styles.viewBarbody}>
@@ -275,35 +280,7 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
     elevation: 10,
   },
-  chipsScrollView: {
-    position: "absolute",
-    top: Platform.OS === "ios" ? 90 : 80,
-    paddingHorizontal: 10,
-  },
 
-  chipsScrollView1: {
-    position: "absolute",
-    top: Platform.OS === "ios" ? 400 : 450,
-    paddingHorizontal: 10,
-  },
-
-  chipsIcon: {
-    marginRight: 5,
-  },
-  chipsItem: {
-    flexDirection: "row",
-    backgroundColor: "#fff",
-    borderRadius: 20,
-    padding: 8,
-    paddingHorizontal: 20,
-    marginHorizontal: 10,
-    height: 35,
-    shadowColor: "#ccc",
-    shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 0.5,
-    shadowRadius: 5,
-    elevation: 10,
-  },
   scrollView: {
     position: "absolute",
     bottom: 0,
@@ -338,7 +315,6 @@ const styles = StyleSheet.create({
     borderWidth: 16,
     alignSelf: "center",
     marginTop: -0.5,
-    // marginBottom: -15
   },
   // Character name
   name: {
@@ -346,7 +322,6 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   card: {
-    // padding: 10,
     elevation: 2,
     backgroundColor: "#FFF",
     borderTopLeftRadius: 5,
@@ -429,13 +404,12 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
 
     borderRadius: 10,
-    height: "20%",
-    width: "90%",
+    height: "22%",
+    width: "94%",
   },
   viewBarheader: {
     flexDirection: "row",
     marginVertical: 10,
-    justifyContent: "center",
   },
   textBarheader: {
     fontSize: 20,

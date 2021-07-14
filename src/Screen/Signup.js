@@ -85,7 +85,7 @@ export default function Signup({ navigation }) {
             fid: finalresponse.id,
             name: finalresponse.name,
           })
-          .then((res) => {
+          .then(res => {
             if (!res.data.userInterests.length) {
               navigation.navigate("Recommendation");
             } else {
@@ -118,7 +118,7 @@ export default function Signup({ navigation }) {
           gid: user.id,
           img: user.photoUrl,
         })
-        .then((res) => {
+        .then(res => {
           storetoken("travelapp", res.data);
 
           if (!res.data.userInterests.length) {
@@ -163,7 +163,7 @@ export default function Signup({ navigation }) {
 
           pass: pass,
         })
-        .then((res) => {
+        .then(res => {
           alert(res.data);
         });
     }
@@ -263,9 +263,7 @@ export default function Signup({ navigation }) {
             Sign up
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate("Home")}>
-          <Text style={{ marginTop: 20 }}>skip</Text>
-        </TouchableOpacity>
+
         <View style={{ flexDirection: "row", marginTop: 20 }}>
           <View
             style={{

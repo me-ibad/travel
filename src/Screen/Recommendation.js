@@ -58,20 +58,17 @@ export default function Recommendation({ navigation }) {
       id: 7,
       name: "Shopping Malls",
     },
+
     {
       id: 8,
-      name: "Shopping Malls",
-    },
-    {
-      id: 9,
       name: "Swimming Pools",
     },
     {
-      id: 10,
+      id: 9,
       name: "Tourist Attraction",
     },
     {
-      id: 11,
+      id: 10,
       name: "Historical Places",
     },
   ];
@@ -83,7 +80,7 @@ export default function Recommendation({ navigation }) {
         id: userData._id,
         userInterests,
       })
-      .then((res) => {
+      .then(res => {
         // alert(res.data)
         storetoken("travelapp", res.data);
         navigation.reset({
@@ -98,8 +95,8 @@ export default function Recommendation({ navigation }) {
   };
 
   const manageInterests = (id, name) => {
-    if (userInterests.find((value) => value.id === id)?.id) {
-      return setUserInterests(userInterests.filter((value) => value.id !== id));
+    if (userInterests.find(value => value.id === id)?.id) {
+      return setUserInterests(userInterests.filter(value => value.id !== id));
     }
 
     setUserInterests([...userInterests, { id: id, name: name }]);
@@ -117,7 +114,7 @@ export default function Recommendation({ navigation }) {
               <View
                 style={{
                   margin: 20,
-                  backgroundColor: userInterests.find((item) => item.id === id)
+                  backgroundColor: userInterests.find(item => item.id === id)
                     ? "skyblue"
                     : "white",
                   display: "flex",
@@ -138,7 +135,7 @@ export default function Recommendation({ navigation }) {
       <TouchableOpacity
         style={{
           backgroundColor: "skyblue",
-          width: 200,
+          width: 150,
           height: 50,
           margin: 30,
           alignItems: "center",
