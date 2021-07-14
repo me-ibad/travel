@@ -113,9 +113,15 @@ export default function Profile({ navigation, route }) {
                 </TouchableOpacity>
               </View>
 
-              <View style={{ width: "80%" }}></View>
+              <View style={{ width: "70%" }}></View>
 
-              <View style={{ width: "20%" }}>
+              <View style={{ width: "10%" }}>
+                <TouchableOpacity onPress={() => navigation.navigate("Chat")}>
+                  <Icon name="help" size={24} color={Colors.white} />
+                </TouchableOpacity>
+              </View>
+
+              <View style={{ width: "10%" }}>
                 <TouchableOpacity
                   onPress={() => navigation.navigate("Settings")}
                 >

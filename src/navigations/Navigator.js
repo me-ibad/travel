@@ -19,6 +19,7 @@ import Detailsmore from "../Component/Pagedetails/Detailsmore";
 import Reviews from "../Component/Pagedetails/Reviews";
 import Recommendation from "../Screen/Recommendation";
 import Settings from "../Screen/Settings";
+import Chat from "../Screen/Chat";
 
 const Tab = createBottomTabNavigator();
 
@@ -112,6 +113,7 @@ const AppNavigator = () => {
             <Stack.Screen name="Signup" component={Signup} />
             <Stack.Screen name="Home" component={BottomTabNavigator} />
             <Stack.Screen name="Test" component={Test} />
+            <Stack.Screen name="Chat" component={Chat} />
             <Tab.Screen name="Maps" component={Maps} />
             <Stack.Screen name="Settings" component={Settings} />
             <Stack.Screen name="Recommendation" component={Recommendation} />
@@ -127,7 +129,7 @@ const AppNavigator = () => {
             <Tab.Screen name="Maps" component={Maps} />
             <Stack.Screen name="Signup" component={Signup} />
             <Stack.Screen name="Test" component={Test} />
-
+            <Stack.Screen name="Chat" component={Chat} />
             <Stack.Screen name="Signin" component={Signin} />
             <Stack.Screen name="Details" component={Details} />
           </>

@@ -39,6 +39,7 @@ export default function Reviews(props) {
         comment: postComment,
       })
       .then(res => {
+        setpostComment("");
         // alert(res.data)
         fetchComments();
       });
@@ -108,6 +109,7 @@ export default function Reviews(props) {
         <TextInput
           style={styles.inputReview}
           placeholder="comment"
+          value={postComment}
           onChangeText={setpostComment}
         />
 

@@ -43,11 +43,11 @@ export default function Test({ navigation, route }) {
     var obje = await getToken("travelapp");
     const userData = JSON.parse(obje);
 
-    getCurrentLocation(async (location) => {
+    getCurrentLocation(async location => {
       let res = await axios.post(serverpoint.servername + "/getLocations", {
         lat: location.coords.latitude,
         long: location.coords.longitude,
-        interests: userData.userInterests.map((value) => value.name),
+        interests: userData.userInterests.map(value => value.name),
       });
 
       setalllocations(res.data);
@@ -168,7 +168,7 @@ export default function Test({ navigation, route }) {
     return { scale };
   });
 
-  const onMarkerPress = (mapEventData) => {
+  const onMarkerPress = mapEventData => {
     const markerID = mapEventData._targetInst.return.key;
 
     let x = markerID * CARD_WIDTH + markerID * 20;
@@ -204,7 +204,7 @@ export default function Test({ navigation, route }) {
             <MapView.Marker
               key={index}
               coordinate={marker.coordinate}
-              onPress={(e) => onMarkerPress(e)}
+              onPress={e => onMarkerPress(e)}
             >
               <Animated.View style={[styles.markerWrap]}>
                 <Animated.Image
@@ -303,7 +303,7 @@ export default function Test({ navigation, route }) {
             }}
           >
             <Image
-              source={marker.image1}
+              source={{ uri: marker.pic1 }}
               style={{ width: 170, borderRadius: 10, height: 130 }}
             />
             <View
