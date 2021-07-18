@@ -175,7 +175,7 @@ export default function Signup({ navigation }) {
 
       <Image
         style={{ width: "100%", height: 200 }}
-        source={require("../assets/images/logo.png")}
+        source={require("../assets/images/icon1.png")}
         resizeMode="contain"
       />
 

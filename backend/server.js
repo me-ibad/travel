@@ -93,6 +93,20 @@ server.listen(port, () => console.log(`server is running ${port}`));
 io.on("connection", socket => {});
 io.on("connection", socket => {});
 
+const express = require("express");
+const app = express();
+
+app.get("/", (req, res) => {
+  const { spawn } = require("child_process");
+  const pyProg = spawn("python", ["./run.py"]);
+
+  pyProg.stdout.on("data", function (data) {
+    console.log(data.toString());
+    res.write(data);
+    res.end("end");
+  });
+});
+
 // const express = require("express");
 // const app = require("express")();
 

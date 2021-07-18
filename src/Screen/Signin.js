@@ -159,7 +159,7 @@ export default function Signin({ navigation }) {
 
       <Image
         style={styles.logoimg}
-        source={require("../assets/images/logo.png")}
+        source={require("../assets/images/icon1.png")}
         resizeMode="contain"
       />
 

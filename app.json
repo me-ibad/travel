@@ -1,12 +1,12 @@
 {
   "expo": {
-    "name": "travel",
-    "slug": "travel",
+    "name": "Smart Travel",
+    "slug": "smart-travel",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/icon1.png",
     "splash": {
-      "image": "./assets/bg1.png",
+      "image": "./assets/splash1.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -15,22 +15,30 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.encodersoft.smarttravel"
     },
     "android": {
-      "package": "com.encodersoft.travel",
+      "package": "com.encodersoft.smarttravel",
+      "permissions": [
+        "CAMERA",
+        "ACCESS_FINE_LOCATION",
+        "FOREGROUND_SERVICE",
+        "ACCESS_COARSE_LOCATION"
+      ],
       "config": {
         "googleMaps": {
           "apiKey": "AIzaSyAhwDsbb1ky0UUyUXm-YlCDsD7diI83g9U"
         }
       },
+      "versionCode": 1,
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/icon1.png",
         "backgroundColor": "#FFFFFF"
       }
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/favicon1.png"
     },
     "facebookAutoInitEnabled": true
   }
