@@ -88,7 +88,7 @@ app.get("/", (req, res) => {
   res.send("Hello");
 });
 
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 5001;
 server.listen(port, () => console.log(`server is running ${port}`));
 io.on("connection", socket => {});
 io.on("connection", socket => {});
